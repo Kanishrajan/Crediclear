@@ -1,17 +1,19 @@
 import { Bell, Search, Menu } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import useStore from '../store/useStore';
 
 const PAGE_TITLES = {
-    dashboard: { title: 'Dashboard', subtitle: 'Overview of your loan analysis' },
-    analyzer: { title: 'Document Analyzer', subtitle: 'AI-powered PDF clause extraction' },
-    simulator: { title: 'EMI Simulator', subtitle: 'Financial impact analysis' },
-    comparison: { title: 'Loan Comparison', subtitle: 'State-wise bank comparison dashboard' },
-    chatbot: { title: 'AI Assistant', subtitle: 'Intelligent loan guidance' },
+    '/app/dashboard': { title: 'Dashboard', subtitle: 'Overview of your loan analysis' },
+    '/app/analyzer': { title: 'Document Analyzer', subtitle: 'AI-powered PDF clause extraction' },
+    '/app/simulator': { title: 'EMI Simulator', subtitle: 'Financial impact analysis' },
+    '/app/comparison': { title: 'Loan Comparison', subtitle: 'State-wise bank comparison dashboard' },
+    '/app/chatbot': { title: 'AI Assistant', subtitle: 'Intelligent loan guidance' },
 };
 
 export default function TopBar() {
-    const { activePage, toggleSidebar } = useStore();
-    const page = PAGE_TITLES[activePage] || PAGE_TITLES.dashboard;
+    const { toggleSidebar } = useStore();
+    const location = useLocation();
+    const page = PAGE_TITLES[location.pathname] || PAGE_TITLES['/app/dashboard'];
 
     return (
         <header style={{

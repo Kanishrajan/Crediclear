@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { MapPin, Lightbulb } from 'lucide-react';
 
 // Risk Score Gauge
 export function RiskGauge({ score, size = 200 }) {
@@ -91,7 +92,7 @@ export function StatCard({ icon, label, value, trend, color = '#6366f1', subtitl
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: '22px',
                 }}>
-                    {icon}
+                    {typeof icon === 'string' ? icon : icon}
                 </div>
                 {trend !== undefined && (
                     <div style={{
@@ -205,8 +206,9 @@ export function ClauseCard({ clause, index }) {
                     {clause.risk}
                 </span>
             </div>
-            <div style={{ fontSize: '14px', color: '#94a3b8', marginBottom: '8px', fontWeight: 500 }}>
-                📌 {clause.value}
+            <div style={{ fontSize: '14px', color: '#94a3b8', marginBottom: '8px', fontWeight: 500, display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
+                <MapPin size={13} color="#6366f1" style={{ marginTop: '2px', flexShrink: 0 }} />
+                {clause.value}
             </div>
             <div style={{
                 fontSize: '13px',
@@ -216,8 +218,10 @@ export function ClauseCard({ clause, index }) {
                 padding: '8px 12px',
                 borderLeft: `3px solid ${c.badge}`,
                 lineHeight: 1.5,
+                display: 'flex', alignItems: 'flex-start', gap: '6px',
             }}>
-                💡 {clause.explanation}
+                <Lightbulb size={13} color="#f59e0b" style={{ marginTop: '2px', flexShrink: 0 }} />
+                {clause.explanation}
             </div>
             {clause.raw && (
                 <details style={{ marginTop: '8px' }}>

@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
     XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
-import { TrendingUp, AlertTriangle, FileText, BarChart3, Shield, Zap, ArrowRight } from 'lucide-react';
+import { TrendingUp, AlertTriangle, FileText, BarChart3, Shield, Zap, ArrowRight, Building2, BookOpen, ShieldAlert, CheckCircle2, XCircle } from 'lucide-react';
 import { StatCard, RiskBadge, RiskGauge } from '../components/UI';
 import useStore from '../store/useStore';
 import { BANK_DATA, calculateRiskScore, calculateEMI, formatCurrency } from '../data/bankData';
@@ -41,7 +41,7 @@ const recentAlerts = [
 const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'];
 
 export default function Dashboard() {
-    const { setActivePage } = useStore();
+    const navigate = useNavigate();
 
     const topDeals = BANK_DATA
         .filter(b => b.loanType === 'Home Loan')
@@ -86,10 +86,10 @@ export default function Dashboard() {
                     </p>
                 </div>
                 <div style={{ display: 'flex', gap: '12px', flexShrink: 0 }}>
-                    <button className="btn-primary" onClick={() => setActivePage('analyzer')}>
+                    <button className="btn-primary" onClick={() => navigate('/app/analyzer')}>
                         <FileText size={16} /> Analyze Document
                     </button>
-                    <button className="btn-secondary" onClick={() => setActivePage('comparison')}>
+                    <button className="btn-secondary" onClick={() => navigate('/app/comparison')}>
                         <BarChart3 size={16} /> Compare Banks
                     </button>
                 </div>
@@ -97,10 +97,10 @@ export default function Dashboard() {
 
             {/* Stat Cards */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
-                <StatCard icon="🏦" label="Banks Tracked" value="8" trend={0} color="#6366f1" subtitle="India's top banks" />
-                <StatCard icon="📄" label="Loan Types" value="10" trend={0} color="#10b981" subtitle="Fully supported" />
-                <StatCard icon="⚠️" label="Avg Risk Score" value="42/100" color="#f59e0b" subtitle="Moderate risk level" />
-                <StatCard icon="🛡️" label="Clauses Analyzed" value="247" trend={12} color="#22c55e" subtitle="Across all documents" />
+                <StatCard icon={<Building2 size={20} color="#6366f1" />} label="Banks Tracked" value="8" trend={0} color="#6366f1" subtitle="India's top banks" />
+                <StatCard icon={<BookOpen size={20} color="#10b981" />} label="Loan Types" value="10" trend={0} color="#10b981" subtitle="Fully supported" />
+                <StatCard icon={<AlertTriangle size={20} color="#f59e0b" />} label="Avg Risk Score" value="42/100" color="#f59e0b" subtitle="Moderate risk level" />
+                <StatCard icon={<Shield size={20} color="#22c55e" />} label="Clauses Analyzed" value="247" trend={12} color="#22c55e" subtitle="Across all documents" />
             </div>
 
             {/* Charts Row */}
@@ -214,7 +214,7 @@ export default function Dashboard() {
                         <button
                             className="btn-secondary"
                             style={{ padding: '5px 12px', fontSize: '12px' }}
-                            onClick={() => setActivePage('comparison')}
+                            onClick={() => navigate('/app/comparison')}
                         >
                             View All <ArrowRight size={12} />
                         </button>
@@ -279,8 +279,17 @@ export default function Dashboard() {
                             border: '1px solid rgba(255,255,255,0.05)',
                         }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                <div style={{ fontSize: '20px' }}>
-                                    {alert.risk === 'High' ? '🚨' : alert.risk === 'Moderate' ? '⚠️' : '✅'}
+                                <div style={{
+                                    width: '32px', height: '32px', borderRadius: '8px',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    background: alert.risk === 'High' ? 'rgba(239,68,68,0.12)' : alert.risk === 'Moderate' ? 'rgba(245,158,11,0.12)' : 'rgba(34,197,94,0.12)',
+                                }}>
+                                    {alert.risk === 'High'
+                                        ? <ShieldAlert size={16} color="#ef4444" />
+                                        : alert.risk === 'Moderate'
+                                            ? <AlertTriangle size={16} color="#f59e0b" />
+                                            : <CheckCircle2 size={16} color="#22c55e" />
+                                    }
                                 </div>
                                 <div>
                                     <div style={{ fontSize: '13px', fontWeight: 600, color: '#f1f5f9' }}>

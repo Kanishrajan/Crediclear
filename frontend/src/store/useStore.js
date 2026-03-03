@@ -4,9 +4,8 @@ const useStore = create((set, get) => ({
     // Auth
     user: { name: 'Demo User', email: 'demo@crediclear.ai', plan: 'Pro' },
 
-    // Active page
-    activePage: 'dashboard',
-    setActivePage: (page) => set({ activePage: page }),
+    // Auth
+    user: { name: 'Demo User', email: 'demo@crediclear.ai', plan: 'Pro' },
 
     // Sidebar
     sidebarOpen: true,

@@ -1,21 +1,23 @@
-import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
     LayoutDashboard, FileText, Calculator, BarChart3, MessageSquare,
     ChevronLeft, ChevronRight, Shield, Bell, LogOut, Settings,
-    TrendingUp, AlertTriangle, Menu, X
+    TrendingUp, AlertTriangle, Menu, X, Cpu, Lock, Building2
 } from 'lucide-react';
 import useStore from '../store/useStore';
 
 const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'analyzer', label: 'Document Analyzer', icon: FileText },
-    { id: 'simulator', label: 'EMI Simulator', icon: Calculator },
-    { id: 'comparison', label: 'Loan Comparison', icon: BarChart3 },
-    { id: 'chatbot', label: 'AI Assistant', icon: MessageSquare },
+    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/app/dashboard' },
+    { id: 'analyzer', label: 'Document Analyzer', icon: FileText, path: '/app/analyzer' },
+    { id: 'simulator', label: 'EMI Simulator', icon: Calculator, path: '/app/simulator' },
+    { id: 'comparison', label: 'Loan Comparison', icon: BarChart3, path: '/app/comparison' },
+    { id: 'chatbot', label: 'AI Assistant', icon: MessageSquare, path: '/app/chatbot' },
 ];
 
 export default function Sidebar() {
-    const { activePage, setActivePage, sidebarOpen, toggleSidebar, user } = useStore();
+    const { sidebarOpen, toggleSidebar, user } = useStore();
+    const location = useLocation();
+    const navigate = useNavigate();
 
     return (
         <>
@@ -45,14 +47,17 @@ export default function Sidebar() {
                 }}
             >
                 {/* Logo */}
-                <div style={{
-                    padding: '20px 16px',
-                    borderBottom: '1px solid rgba(99, 102, 241, 0.15)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px',
-                    minHeight: '72px'
-                }}>
+                <div
+                    onClick={() => navigate('/')}
+                    style={{
+                        padding: '20px 16px',
+                        borderBottom: '1px solid rgba(99, 102, 241, 0.15)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        minHeight: '72px',
+                        cursor: 'pointer'
+                    }}>
                     <div style={{
                         width: '40px',
                         height: '40px',
@@ -80,57 +85,61 @@ export default function Sidebar() {
 
                 {/* Navigation */}
                 <nav style={{ flex: 1, padding: '16px 8px', display: 'flex', flexDirection: 'column', gap: '4px', overflowY: 'auto' }}>
-                    {navItems.map(({ id, label, icon: Icon }) => (
-                        <button
-                            key={id}
-                            onClick={() => setActivePage(id)}
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '12px',
-                                padding: sidebarOpen ? '10px 12px' : '10px',
-                                borderRadius: '8px',
-                                cursor: 'pointer',
-                                border: 'none',
-                                transition: 'all 0.2s',
-                                fontFamily: 'Inter',
-                                fontSize: '14px',
-                                fontWeight: 500,
-                                textAlign: 'left',
-                                justifyContent: sidebarOpen ? 'flex-start' : 'center',
-                                background: activePage === id
-                                    ? 'linear-gradient(135deg, rgba(99,102,241,0.2), rgba(99,102,241,0.1))'
-                                    : 'transparent',
-                                color: activePage === id ? '#818cf8' : '#94a3b8',
-                                borderLeft: activePage === id ? '3px solid #6366f1' : '3px solid transparent',
-                            }}
-                        >
-                            <Icon size={18} style={{ flexShrink: 0 }} />
-                            {sidebarOpen && <span style={{ whiteSpace: 'nowrap' }}>{label}</span>}
-                            {sidebarOpen && activePage === id && (
-                                <div style={{
-                                    marginLeft: 'auto',
-                                    width: '6px',
-                                    height: '6px',
-                                    borderRadius: '50%',
-                                    background: '#6366f1',
-                                    boxShadow: '0 0 8px #6366f1',
-                                }} />
-                            )}
-                        </button>
-                    ))}
+                    {navItems.map(({ id, label, icon: Icon, path }) => {
+                        const isActive = location.pathname === path;
+                        return (
+                            <Link
+                                key={id}
+                                to={path}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '12px',
+                                    padding: sidebarOpen ? '10px 12px' : '10px',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    border: 'none',
+                                    transition: 'all 0.2s',
+                                    textDecoration: 'none',
+                                    fontFamily: 'Inter',
+                                    fontSize: '14px',
+                                    fontWeight: 500,
+                                    textAlign: 'left',
+                                    justifyContent: sidebarOpen ? 'flex-start' : 'center',
+                                    background: isActive
+                                        ? 'linear-gradient(135deg, rgba(99,102,241,0.2), rgba(99,102,241,0.1))'
+                                        : 'transparent',
+                                    color: isActive ? '#818cf8' : '#94a3b8',
+                                    borderLeft: isActive ? '3px solid #6366f1' : '3px solid transparent',
+                                }}
+                            >
+                                <Icon size={18} style={{ flexShrink: 0 }} />
+                                {sidebarOpen && <span style={{ whiteSpace: 'nowrap' }}>{label}</span>}
+                                {sidebarOpen && isActive && (
+                                    <div style={{
+                                        marginLeft: 'auto',
+                                        width: '6px',
+                                        height: '6px',
+                                        borderRadius: '50%',
+                                        background: '#6366f1',
+                                        boxShadow: '0 0 8px #6366f1',
+                                    }} />
+                                )}
+                            </Link>
+                        );
+                    })}
 
                     {/* Feature badges */}
                     {sidebarOpen && (
                         <div style={{ marginTop: '16px', padding: '12px', background: 'rgba(99,102,241,0.08)', borderRadius: '8px', border: '1px solid rgba(99,102,241,0.15)' }}>
                             <div style={{ fontSize: '11px', color: '#6366f1', fontWeight: 700, marginBottom: '8px', letterSpacing: '0.5px' }}>ACTIVE FEATURES</div>
                             {[
-                                { icon: '🤖', label: 'XAI Enabled' },
-                                { icon: '🔒', label: '10 Loan Types' },
-                                { icon: '🏦', label: 'India Banks' },
-                            ].map(({ icon, label }) => (
+                                { icon: Cpu, label: 'XAI Enabled' },
+                                { icon: Lock, label: '10 Loan Types' },
+                                { icon: Building2, label: 'India Banks' },
+                            ].map(({ icon: Icon, label }) => (
                                 <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                                    <span style={{ fontSize: '14px' }}>{icon}</span>
+                                    <Icon size={13} color="#6366f1" style={{ flexShrink: 0 }} />
                                     <span style={{ fontSize: '12px', color: '#64748b' }}>{label}</span>
                                 </div>
                             ))}

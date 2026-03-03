@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload, FileText, CheckCircle, AlertTriangle, Info, Zap, Brain } from 'lucide-react';
+import { Upload, FileText, CheckCircle, AlertTriangle, Info, Zap, Brain, ShieldAlert, Lightbulb, CheckCircle2 } from 'lucide-react';
 import { ClauseCard, RiskGauge, LoadingSpinner } from '../components/UI';
 import useStore from '../store/useStore';
 import { DEMO_DOCUMENTS, } from '../data/demoData';
@@ -75,8 +75,9 @@ export default function DocumentAnalyzer() {
                 alignItems: 'center',
             }}>
                 <div>
-                    <h2 style={{ fontFamily: 'Outfit', fontSize: '20px', fontWeight: 700, color: '#f1f5f9', margin: 0 }}>
-                        🔍 Smart Document Analyzer
+                    <h2 style={{ fontFamily: 'Outfit', fontSize: '20px', fontWeight: 700, color: '#f1f5f9', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Brain size={20} color="#6366f1" />
+                        Smart Document Analyzer
                     </h2>
                     <p style={{ fontSize: '13px', color: '#94a3b8', marginTop: '4px' }}>
                         AI-powered clause extraction • NER-based entity detection • XAI risk explanation
@@ -121,7 +122,7 @@ export default function DocumentAnalyzer() {
                                     value={selectedLoanType}
                                     onChange={e => setSelectedLoanType(e.target.value)}
                                 >
-                                    {LOAN_TYPES.map(t => <option key={t.id} value={t.name}>{t.icon} {t.name}</option>)}
+                                    {LOAN_TYPES.map(t => <option key={t.id} value={t.name}>{t.name}</option>)}
                                 </select>
                             </div>
                         </div>
@@ -254,11 +255,11 @@ export default function DocumentAnalyzer() {
 
                                 {/* Risk Summary */}
                                 <div style={{ display: 'flex', gap: '8px', marginTop: '12px', flexWrap: 'wrap' }}>
-                                    <div style={{ fontSize: '12px', padding: '4px 10px', borderRadius: '12px', background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', color: '#ef4444', fontWeight: 600 }}>
-                                        🚨 {highRiskClauses.length} High Risk Clause{highRiskClauses.length !== 1 ? 's' : ''}
+                                    <div style={{ fontSize: '12px', padding: '4px 10px', borderRadius: '12px', background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', color: '#ef4444', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                        <ShieldAlert size={11} /> {highRiskClauses.length} High Risk Clause{highRiskClauses.length !== 1 ? 's' : ''}
                                     </div>
-                                    <div style={{ fontSize: '12px', padding: '4px 10px', borderRadius: '12px', background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.3)', color: '#f59e0b', fontWeight: 600 }}>
-                                        ⚠️ {moderateClauses.length} Moderate Risks
+                                    <div style={{ fontSize: '12px', padding: '4px 10px', borderRadius: '12px', background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.3)', color: '#f59e0b', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                        <AlertTriangle size={11} /> {moderateClauses.length} Moderate Risks
                                     </div>
                                 </div>
                             </div>
@@ -274,8 +275,8 @@ export default function DocumentAnalyzer() {
                             <div style={{ display: 'flex', borderBottom: '1px solid rgba(99,102,241,0.15)', padding: '0 16px' }}>
                                 {[
                                     { id: 'clauses', label: `Clauses (${analysisResult.clauses?.length || 0})` },
-                                    { id: 'xai', label: '🤖 XAI Explanation' },
-                                    { id: 'raw', label: '📄 Raw Extraction' },
+                                    { id: 'xai', label: 'XAI Explanation' },
+                                    { id: 'raw', label: 'Raw Extraction' },
                                 ].map(tab => (
                                     <button
                                         key={tab.id}
@@ -315,8 +316,9 @@ export default function DocumentAnalyzer() {
                                             borderRadius: '10px',
                                             padding: '16px',
                                         }}>
-                                            <h4 style={{ color: '#818cf8', fontFamily: 'Outfit', fontSize: '15px', marginBottom: '12px' }}>
-                                                🤖 Why Risk Score = {analysisResult.riskScore}/100?
+                                            <h4 style={{ color: '#818cf8', fontFamily: 'Outfit', fontSize: '15px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                <Brain size={15} color="#818cf8" />
+                                                Why Risk Score = {analysisResult.riskScore}/100?
                                             </h4>
                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                                 {analysisResult.clauses?.filter(c => c.risk !== 'low').map(clause => (
@@ -329,9 +331,16 @@ export default function DocumentAnalyzer() {
                                                         borderRadius: '8px',
                                                         borderLeft: `3px solid ${clause.risk === 'high' ? '#ef4444' : '#f59e0b'}`,
                                                     }}>
-                                                        <span style={{ fontSize: '16px', flexShrink: 0 }}>
-                                                            {clause.risk === 'high' ? '🚨' : '⚠️'}
-                                                        </span>
+                                                        <div style={{
+                                                            width: '28px', height: '28px', borderRadius: '6px', flexShrink: 0,
+                                                            background: clause.risk === 'high' ? 'rgba(239,68,68,0.12)' : 'rgba(245,158,11,0.12)',
+                                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                        }}>
+                                                            {clause.risk === 'high'
+                                                                ? <ShieldAlert size={14} color="#ef4444" />
+                                                                : <AlertTriangle size={14} color="#f59e0b" />
+                                                            }
+                                                        </div>
                                                         <div>
                                                             <div style={{ fontSize: '13px', fontWeight: 600, color: '#f1f5f9' }}>{clause.label}</div>
                                                             <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '4px' }}>{clause.explanation}</div>
@@ -346,13 +355,16 @@ export default function DocumentAnalyzer() {
                                             borderRadius: '10px',
                                             padding: '16px',
                                         }}>
-                                            <h4 style={{ color: '#10b981', fontSize: '14px', marginBottom: '8px' }}>💡 AI Recommendation</h4>
+                                            <h4 style={{ color: '#10b981', fontSize: '14px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                <Lightbulb size={14} color="#10b981" />
+                                                AI Recommendation
+                                            </h4>
                                             <p style={{ fontSize: '13px', color: '#94a3b8', lineHeight: 1.7 }}>
                                                 {analysisResult.riskScore > 60
-                                                    ? '⚠️ This loan agreement has HIGH risk. We strongly recommend negotiating the foreclosure charges and review the cross-default clause carefully. Consider comparing with other lenders.'
+                                                    ? 'This loan agreement has HIGH risk. We strongly recommend negotiating the foreclosure charges and review the cross-default clause carefully. Consider comparing with other lenders.'
                                                     : analysisResult.riskScore > 30
-                                                        ? '📋 This is a MODERATE risk loan. The floating rate poses some uncertainty. Ensure you can handle rate increases of up to 2-3%. No major hidden clauses detected.'
-                                                        : '✅ This appears to be a LOW risk loan agreement with transparent terms. No major hidden clauses detected. The floating rate is the only notable risk factor.'}
+                                                        ? 'This is a MODERATE risk loan. The floating rate poses some uncertainty. Ensure you can handle rate increases of up to 2–3%. No major hidden clauses detected.'
+                                                        : 'This appears to be a LOW risk loan agreement with transparent terms. No major hidden clauses detected. The floating rate is the only notable risk factor.'}
                                             </p>
                                         </div>
                                     </div>

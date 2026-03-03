@@ -85,7 +85,7 @@ export default function LoanComparison() {
             }}>
                 <div>
                     <h2 style={{ fontFamily: 'Outfit', fontSize: '20px', fontWeight: 700, color: '#f1f5f9', margin: 0 }}>
-                        📊 Loan Comparison Dashboard
+                        Bank Loan Comparison Dashboard
                     </h2>
                     <p style={{ fontSize: '13px', color: '#94a3b8', marginTop: '4px' }}>
                         State-wise bank comparison • Risk scoring • XAI-powered analysis
@@ -102,7 +102,7 @@ export default function LoanComparison() {
                             value={selectedState}
                             onChange={e => setSelectedState(e.target.value)}
                         >
-                            {STATES.map(s => <option key={s} value={s}>📍 {s}</option>)}
+                            {STATES.map(s => <option key={s} value={s}>{s}</option>)}
                         </select>
                     </div>
                     <select
@@ -154,7 +154,9 @@ export default function LoanComparison() {
             {/* Bank Cards Grid */}
             {filteredLoans.length === 0 ? (
                 <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-                    <div style={{ fontSize: '48px', marginBottom: '16px' }}>🏦</div>
+                    <div style={{ fontSize: '48px', marginBottom: '16px', opacity: 0.3 }}>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
+                    </div>
                     <div style={{ fontSize: '16px', fontWeight: 600, color: '#f1f5f9' }}>No offers found</div>
                     <div style={{ fontSize: '13px', color: '#64748b', marginTop: '8px' }}>
                         No banks offer {selectedLoanType} in {selectedState} yet.
@@ -361,7 +363,9 @@ export default function LoanComparison() {
                         </div>
                     ) : (
                         <div className="card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '12px' }}>
-                            <div style={{ fontSize: '40px' }}>📡</div>
+                            <div style={{ fontSize: '40px', marginBottom: '12px', opacity: 0.3 }}>
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+                            </div>
                             <div style={{ fontSize: '15px', fontWeight: 600, color: '#f1f5f9', fontFamily: 'Outfit' }}>Select 2–4 banks</div>
                             <div style={{ fontSize: '13px', color: '#64748b', textAlign: 'center' }}>Click on bank cards above to compare them in a multi-dimension radar chart</div>
                         </div>
@@ -373,7 +377,7 @@ export default function LoanComparison() {
             {compareLoans.length >= 2 && (
                 <div className="card" style={{ overflowX: 'auto' }}>
                     <h3 style={{ fontFamily: 'Outfit', fontSize: '15px', color: '#f1f5f9', marginBottom: '16px' }}>
-                        📋 Detailed Comparison Table
+                        Detailed Comparison Table
                     </h3>
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
                         <thead>

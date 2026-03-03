@@ -3,7 +3,7 @@ import {
     LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
     XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine
 } from 'recharts';
-import { AlertTriangle, TrendingUp, DollarSign, Calendar } from 'lucide-react';
+import { AlertTriangle, TrendingUp, DollarSign, Calendar, Calculator } from 'lucide-react';
 import useStore from '../store/useStore';
 import { LOAN_TYPES, calculateEMI, calculateTotalRepayment, formatCurrency } from '../data/bankData';
 
@@ -92,8 +92,9 @@ export default function EMISimulator() {
                 borderRadius: '12px',
                 padding: '20px 24px',
             }}>
-                <h2 style={{ fontFamily: 'Outfit', fontSize: '20px', fontWeight: 700, color: '#f1f5f9', margin: 0 }}>
-                    💰 Financial Impact Simulator
+                <h2 style={{ fontFamily: 'Outfit', fontSize: '20px', fontWeight: 700, color: '#f1f5f9', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Calculator size={20} color="#10b981" />
+                    Financial Impact Simulator
                 </h2>
                 <p style={{ fontSize: '13px', color: '#94a3b8', marginTop: '4px' }}>
                     EMI Calculator • Interest Simulation • Foreclosure Analysis • Amortization Schedule
@@ -114,7 +115,7 @@ export default function EMISimulator() {
                                 value={loanType}
                                 onChange={e => setSimulatorState({ loanType: e.target.value })}
                             >
-                                {LOAN_TYPES.map(t => <option key={t.id} value={t.name}>{t.icon} {t.name}</option>)}
+                                {LOAN_TYPES.map(t => <option key={t.id} value={t.name}>{t.name}</option>)}
                             </select>
                         </div>
 
@@ -273,13 +274,12 @@ export default function EMISimulator() {
                     {/* Key Metrics */}
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
                         {[
-                            { label: 'Monthly EMI', value: formatCurrency(Math.round(emi)), sub: 'Per month', color: '#6366f1', icon: '📅' },
-                            { label: 'Total Repayment', value: formatCurrency(Math.round(totalRepayment)), sub: `Over ${T} years`, color: '#f59e0b', icon: '💰' },
-                            { label: 'Total Interest', value: formatCurrency(Math.round(totalInterest)), sub: `${((totalInterest / P) * 100).toFixed(0)}% of principal`, color: '#ef4444', icon: '📈' },
-                            { label: 'Income Burden', value: `${incomeBurden.toFixed(1)}%`, sub: incomeBurden > 50 ? '⚠️ High' : '✅ Safe', color: incomeBurden > 50 ? '#ef4444' : '#22c55e', icon: '🏦' },
+                            { label: 'Monthly EMI', value: formatCurrency(Math.round(emi)), sub: 'Per month', color: '#6366f1', icon: 'emi' },
+                            { label: 'Total Repayment', value: formatCurrency(Math.round(totalRepayment)), sub: `Over ${T} years`, color: '#f59e0b', icon: 'total' },
+                            { label: 'Total Interest', value: formatCurrency(Math.round(totalInterest)), sub: `${((totalInterest / P) * 100).toFixed(0)}% of principal`, color: '#ef4444', icon: 'interest' },
+                            { label: 'Income Burden', value: `${incomeBurden.toFixed(1)}%`, sub: incomeBurden > 50 ? 'High' : 'Safe', color: incomeBurden > 50 ? '#ef4444' : '#22c55e', icon: 'burden' },
                         ].map((metric) => (
                             <div key={metric.label} className="card" style={{ textAlign: 'center' }}>
-                                <div style={{ fontSize: '24px', marginBottom: '8px' }}>{metric.icon}</div>
                                 <div style={{ fontSize: '20px', fontWeight: 800, color: metric.color, fontFamily: 'Outfit' }}>{metric.value}</div>
                                 <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '4px' }}>{metric.label}</div>
                                 <div style={{ fontSize: '11px', color: '#64748b', marginTop: '2px' }}>{metric.sub}</div>

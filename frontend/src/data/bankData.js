@@ -59,16 +59,16 @@ export const BANK_DATA = [
 ];
 
 export const LOAN_TYPES = [
-    { id: 'home', name: 'Home Loan', icon: '🏠', description: 'For purchasing residential property', maxLTV: 75, typicalTenure: 30 },
-    { id: 'education', name: 'Education Loan', icon: '🎓', description: 'For higher education in India/abroad', maxLTV: 100, typicalTenure: 15 },
-    { id: 'car', name: 'Car Loan', icon: '🚗', description: 'For new or used vehicle purchase', maxLTV: 85, typicalTenure: 7 },
-    { id: 'personal', name: 'Personal Loan', icon: '💳', description: 'Unsecured loan for any purpose', maxLTV: 100, typicalTenure: 5 },
-    { id: 'business', name: 'Business Loan', icon: '🏢', description: 'For business expansion & operations', maxLTV: 80, typicalTenure: 5 },
-    { id: 'gold', name: 'Gold Loan', icon: '🥇', description: 'Loan against gold collateral', maxLTV: 75, typicalTenure: 3 },
-    { id: 'agricultural', name: 'Agricultural Loan', icon: '🌾', description: 'For farming & agricultural needs', maxLTV: 100, typicalTenure: 5 },
-    { id: 'msme', name: 'MSME Loan', icon: '🏭', description: 'For micro, small & medium enterprises', maxLTV: 80, typicalTenure: 7 },
-    { id: 'startup', name: 'Startup Loan', icon: '🚀', description: 'For new business ventures', maxLTV: 90, typicalTenure: 7 },
-    { id: 'medical', name: 'Medical Emergency Loan', icon: '🏥', description: 'For urgent medical expenses', maxLTV: 100, typicalTenure: 5 },
+    { id: 'home', name: 'Home Loan', icon: '', description: 'For purchasing residential property', maxLTV: 75, typicalTenure: 30 },
+    { id: 'education', name: 'Education Loan', icon: '', description: 'For higher education in India/abroad', maxLTV: 100, typicalTenure: 15 },
+    { id: 'car', name: 'Car Loan', icon: '', description: 'For new or used vehicle purchase', maxLTV: 85, typicalTenure: 7 },
+    { id: 'personal', name: 'Personal Loan', icon: '', description: 'Unsecured loan for any purpose', maxLTV: 100, typicalTenure: 5 },
+    { id: 'business', name: 'Business Loan', icon: '', description: 'For business expansion & operations', maxLTV: 80, typicalTenure: 5 },
+    { id: 'gold', name: 'Gold Loan', icon: '', description: 'Loan against gold collateral', maxLTV: 75, typicalTenure: 3 },
+    { id: 'agricultural', name: 'Agricultural Loan', icon: '', description: 'For farming & agricultural needs', maxLTV: 100, typicalTenure: 5 },
+    { id: 'msme', name: 'MSME Loan', icon: '', description: 'For micro, small & medium enterprises', maxLTV: 80, typicalTenure: 7 },
+    { id: 'startup', name: 'Startup Loan', icon: '', description: 'For new business ventures', maxLTV: 90, typicalTenure: 7 },
+    { id: 'medical', name: 'Medical Emergency Loan', icon: '', description: 'For urgent medical expenses', maxLTV: 100, typicalTenure: 5 },
 ];
 
 export const STATES = ['Tamil Nadu', 'Karnataka', 'Maharashtra', 'Delhi', 'Kerala'];
