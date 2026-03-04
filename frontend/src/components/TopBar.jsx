@@ -1,19 +1,23 @@
 import { Bell, Search, Menu } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import useStore from '../store/useStore';
+import { useLanguage } from '../context/LanguageContext';
+import LanguageSwitcher from './LanguageSwitcher';
 
-const PAGE_TITLES = {
-    '/app/dashboard': { title: 'Dashboard', subtitle: 'Overview of your loan analysis' },
-    '/app/analyzer': { title: 'Document Analyzer', subtitle: 'AI-powered PDF clause extraction' },
-    '/app/simulator': { title: 'EMI Simulator', subtitle: 'Financial impact analysis' },
-    '/app/comparison': { title: 'Loan Comparison', subtitle: 'State-wise bank comparison dashboard' },
-    '/app/chatbot': { title: 'AI Assistant', subtitle: 'Intelligent loan guidance' },
+const PAGE_KEYS = {
+    '/app/dashboard': 'dashboard',
+    '/app/analyzer': 'analyzer',
+    '/app/simulator': 'simulator',
+    '/app/comparison': 'comparison',
+    '/app/chatbot': 'chatbot',
 };
 
 export default function TopBar() {
     const { toggleSidebar } = useStore();
+    const { t } = useLanguage();
     const location = useLocation();
-    const page = PAGE_TITLES[location.pathname] || PAGE_TITLES['/app/dashboard'];
+    const pageKey = PAGE_KEYS[location.pathname] || 'dashboard';
+    const page = t.topbar.pages[pageKey];
 
     return (
         <header style={{
@@ -62,7 +66,7 @@ export default function TopBar() {
                 }}>
                     <Search size={14} color="#64748b" />
                     <input
-                        placeholder="Search clauses, banks..."
+                        placeholder={t.topbar.searchPlaceholder}
                         style={{
                             background: 'none',
                             border: 'none',
@@ -74,6 +78,9 @@ export default function TopBar() {
                         }}
                     />
                 </div>
+
+                {/* Language Switcher */}
+                <LanguageSwitcher variant="dark" />
 
                 {/* Notifications */}
                 <button style={{
@@ -111,7 +118,7 @@ export default function TopBar() {
                     padding: '5px 12px',
                 }}>
                     <div style={{ width: '6px', height: '6px', background: '#10b981', borderRadius: '50%', boxShadow: '0 0 6px #10b981' }} />
-                    <span style={{ fontSize: '11px', fontWeight: 600, color: '#10b981' }}>XAI Active</span>
+                    <span style={{ fontSize: '11px', fontWeight: 600, color: '#10b981' }}>{t.topbar.xaiActive}</span>
                 </div>
             </div>
         </header>

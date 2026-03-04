@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useStore from '../store/useStore';
+import { useLanguage } from '../context/LanguageContext';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 /* ─── Animated Canvas Particle Grid ─────────────────────────────────────── */
 function ParticleCanvas() {
@@ -273,6 +275,7 @@ function DashboardPreview() {
 export default function LandingPage() {
     const navigate = useNavigate();
     const [scrolled, setScrolled] = useState(false);
+    const { t } = useLanguage();
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 40);
@@ -282,85 +285,32 @@ export default function LandingPage() {
 
     const goToDashboard = () => navigate('/app/dashboard');
 
-    const features = [
-        {
-            icon: (
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                    <polyline points="14 2 14 8 20 8" />
-                    <line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />
-                </svg>
-            ),
-            title: 'Smart Document Analysis',
-            desc: 'Upload loan agreements in PDF format. Our NLP engine extracts clauses, identifies risk entities, and explains every term in plain language.',
-            color: '#6366f1',
-        },
-        {
-            icon: (
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-                </svg>
-            ),
-            title: 'Financial Impact Simulator',
-            desc: 'Calculate exact EMIs, simulate interest rate changes, and model early foreclosure scenarios with real-time interactive charts.',
-            color: '#10b981',
-        },
-        {
-            icon: (
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <rect x="3" y="3" width="18" height="18" rx="2" /><path d="M9 9h6M9 12h6M9 15h4" />
-                </svg>
-            ),
-            title: 'Bank Offer Comparison',
-            desc: 'Compare up to four banks simultaneously across 10 loan types and 5 Indian states with structured risk scoring and radar analysis.',
-            color: '#f59e0b',
-        },
-        {
-            icon: (
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                </svg>
-            ),
-            title: 'AI-Powered Advisor',
-            desc: 'Ask questions in natural language. Our AI explains hidden clauses, compares offers, and gives personalized financial guidance in real time.',
-            color: '#8b5cf6',
-        },
-        {
-            icon: (
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                </svg>
-            ),
-            title: 'Explainable Risk Scoring',
-            desc: 'Every risk score from 0 to 100 is fully explainable. See exactly which clause contributed to the score and why, with XAI transparency.',
-            color: '#ef4444',
-        },
-        {
-            icon: (
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" />
-                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                </svg>
-            ),
-            title: 'India-Specific Intelligence',
-            desc: 'Built specifically for Indian borrowers. Covers RBI regulations, SARFAESI implications, EBLR-linked rates, and state-specific bank offers.',
-            color: '#06b6d4',
-        },
+    const FEATURE_ICONS = [
+        (<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg>),
+        (<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>),
+        (<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M9 9h6M9 12h6M9 15h4" /></svg>),
+        (<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>),
+        (<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>),
+        (<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></svg>),
     ];
+    const FEATURE_COLORS = ['#6366f1', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4'];
 
-    const stats = [
-        { value: 8, suffix: '', label: 'Banks Covered', sub: 'All major Indian lenders' },
-        { value: 10, suffix: '', label: 'Loan Types', sub: 'Home, Education, MSME & more' },
-        { value: 36, suffix: '+', label: 'Loan Products', sub: 'Across 5 Indian states' },
-        { value: 100, suffix: '', label: 'XAI Risk Score', sub: 'Fully explainable scoring' },
-    ];
+    const features = t.features.items.map((item, i) => ({
+        icon: FEATURE_ICONS[i],
+        title: item.title,
+        desc: item.desc,
+        color: FEATURE_COLORS[i],
+    }));
 
-    const steps = [
-        { num: '01', title: 'Upload Your Document', desc: 'Drag and drop any loan agreement, sanction letter, or offer document in PDF format.' },
-        { num: '02', title: 'AI Extracts Clauses', desc: 'Our NLP engine identifies interest rates, penalties, hidden conditions, and risk entities.' },
-        { num: '03', title: 'Get Your Risk Score', desc: 'Receive a fully explained risk score with clause-level attribution and AI recommendations.' },
-        { num: '04', title: 'Compare and Decide', desc: 'Use the comparison dashboard to evaluate multiple bank offers and make an informed decision.' },
+    const STAT_VALUES = [
+        { value: 8, suffix: '' },
+        { value: 10, suffix: '' },
+        { value: 36, suffix: '+' },
+        { value: 100, suffix: '' },
     ];
+    const stats = t.stats.items.map((item, i) => ({ ...STAT_VALUES[i], label: item.label, sub: item.sub }));
+
+    const steps = t.howItWorks.steps.map((s, i) => ({ num: String(i + 1).padStart(2, '0'), title: s.title, desc: s.desc }));
 
     return (
         <div style={{ background: '#070b14', color: '#f1f5f9', fontFamily: 'Inter, sans-serif', position: 'relative', overflowX: 'hidden' }}>
@@ -509,22 +459,29 @@ export default function LandingPage() {
 
                 {/* Nav links */}
                 <div style={{ display: 'flex', gap: '32px', alignItems: 'center' }}>
-                    {['Features', 'How It Works', 'Statistics'].map(link => (
-                        <button key={link} className="nav-link" onClick={() => {
-                            document.getElementById(link.toLowerCase().replace(' ', '-'))?.scrollIntoView({ behavior: 'smooth' });
+                    {[
+                        { label: t.nav.features, id: 'features' },
+                        { label: t.nav.howItWorks, id: 'how-it-works' },
+                        { label: t.nav.statistics, id: 'statistics' },
+                    ].map(link => (
+                        <button key={link.id} className="nav-link" onClick={() => {
+                            document.getElementById(link.id)?.scrollIntoView({ behavior: 'smooth' });
                         }}>
-                            {link}
+                            {link.label}
                         </button>
                     ))}
                 </div>
 
-                {/* CTA */}
-                <button className="landing-btn-primary" style={{ padding: '10px 24px', fontSize: '14px' }} onClick={goToDashboard}>
-                    Get Started
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                        <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
-                    </svg>
-                </button>
+                {/* Right side: Language Switcher + CTA */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <LanguageSwitcher variant="nav" />
+                    <button className="landing-btn-primary" style={{ padding: '10px 24px', fontSize: '14px' }} onClick={goToDashboard}>
+                        {t.nav.getStarted}
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                            <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+                        </svg>
+                    </button>
+                </div>
             </nav>
 
             {/* ── Hero ──────────────────────────────────────────────────────── */}
@@ -554,7 +511,7 @@ export default function LandingPage() {
                     }}>
                         <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981' }} />
                         <span style={{ fontSize: '12px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.5px' }}>
-                            Explainable AI for Indian Loan Markets
+                            {t.hero.badge}
                         </span>
                     </div>
 
@@ -568,14 +525,14 @@ export default function LandingPage() {
                         marginBottom: '20px',
                         color: '#f1f5f9',
                     }}>
-                        Make Loan Decisions<br />
+                        {t.hero.headline1}<br />
                         <span style={{
                             background: 'linear-gradient(135deg, #6366f1 0%, #818cf8 40%, #10b981 100%)',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
                             backgroundClip: 'text',
                         }}>
-                            With Full Clarity
+                            {t.hero.headline2}
                         </span>
                     </h1>
 
@@ -587,13 +544,13 @@ export default function LandingPage() {
                         marginBottom: '36px',
                         fontWeight: 400,
                     }}>
-                        CrediClear AI analyzes your loan documents, extracts every clause, scores hidden risks, and provides bank-by-bank comparisons — all powered by Explainable Artificial Intelligence.
+                        {t.hero.subtext}
                     </p>
 
                     {/* CTA Buttons */}
                     <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
                         <button className="landing-btn-primary" onClick={goToDashboard}>
-                            Get Started — It's Free
+                            {t.hero.cta1}
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                                 <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
                             </svg>
@@ -602,16 +559,16 @@ export default function LandingPage() {
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                 <circle cx="12" cy="12" r="10" /><polygon points="10 8 16 12 10 16 10 8" />
                             </svg>
-                            See How It Works
+                            {t.hero.cta2}
                         </button>
                     </div>
 
                     {/* Trust indicators */}
                     <div style={{ display: 'flex', gap: '24px', marginTop: '44px', alignItems: 'center' }}>
                         {[
-                            { label: '8 Banks', sub: 'Tracked' },
-                            { label: '10 Loan Types', sub: 'Supported' },
-                            { label: 'XAI', sub: 'Powered' },
+                            { label: t.hero.trust1Label, sub: t.hero.trust1Sub },
+                            { label: t.hero.trust2Label, sub: t.hero.trust2Sub },
+                            { label: t.hero.trust3Label, sub: t.hero.trust3Sub },
                         ].map((item, i) => (
                             <div key={i} style={{ display: 'flex', flexDirection: 'column' }}>
                                 <span style={{ fontSize: '15px', fontWeight: 700, color: '#f1f5f9' }}>{item.label}</span>
@@ -635,12 +592,12 @@ export default function LandingPage() {
             <section id="features" style={{ padding: '100px 48px', position: 'relative', zIndex: 1 }}>
                 <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                     <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-                        <div className="section-label">Core Capabilities</div>
+                        <div className="section-label">{t.features.sectionLabel}</div>
                         <h2 style={{ fontSize: 'clamp(28px, 3vw, 42px)', fontWeight: 800, fontFamily: 'Outfit', letterSpacing: '-0.8px', color: '#f1f5f9', marginBottom: '14px' }}>
-                            Everything You Need to Evaluate a Loan
+                            {t.features.heading}
                         </h2>
                         <p style={{ fontSize: '16px', color: '#64748b', maxWidth: '520px', margin: '0 auto', lineHeight: 1.7 }}>
-                            A complete intelligence layer between you and your lender — built for Indian borrowers.
+                            {t.features.subtext}
                         </p>
                     </div>
 
@@ -707,12 +664,12 @@ export default function LandingPage() {
             <section id="how-it-works" style={{ padding: '80px 48px 100px', position: 'relative', zIndex: 1 }}>
                 <div style={{ maxWidth: '900px', margin: '0 auto' }}>
                     <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-                        <div className="section-label">Process</div>
+                        <div className="section-label">{t.howItWorks.sectionLabel}</div>
                         <h2 style={{ fontSize: 'clamp(28px, 3vw, 40px)', fontWeight: 800, fontFamily: 'Outfit', letterSpacing: '-0.8px', color: '#f1f5f9', marginBottom: '12px' }}>
-                            From Document to Decision in Minutes
+                            {t.howItWorks.heading}
                         </h2>
                         <p style={{ fontSize: '15px', color: '#64748b', lineHeight: 1.7 }}>
-                            A transparent, four-step workflow powered by AI.
+                            {t.howItWorks.subtext}
                         </p>
                     </div>
 
@@ -767,15 +724,15 @@ export default function LandingPage() {
                 }}>
                     <div style={{ position: 'absolute', top: '-60px', left: '50%', transform: 'translateX(-50%)', width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
 
-                    <div className="section-label" style={{ marginBottom: '16px' }}>Start Now</div>
+                    <div className="section-label" style={{ marginBottom: '16px' }}>{t.cta.sectionLabel}</div>
                     <h2 style={{ fontSize: 'clamp(26px, 3vw, 38px)', fontWeight: 800, fontFamily: 'Outfit', letterSpacing: '-0.8px', color: '#f1f5f9', marginBottom: '16px' }}>
-                        Stop Signing Loans You Don't Fully Understand
+                        {t.cta.heading}
                     </h2>
                     <p style={{ fontSize: '15px', color: '#64748b', maxWidth: '480px', margin: '0 auto 36px', lineHeight: 1.7 }}>
-                        CrediClear gives you the same analytical power that banks use — now in your hands, for free.
+                        {t.cta.subtext}
                     </p>
                     <button className="landing-btn-primary" style={{ fontSize: '15px', padding: '15px 40px' }} onClick={goToDashboard}>
-                        Open Dashboard
+                        {t.cta.button}
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                             <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
                         </svg>
