@@ -2,7 +2,7 @@ from fastapi import FastAPI, UploadFile, File, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import Optional, List, Any, cast
 import json
 import re
 import math
@@ -91,7 +91,7 @@ def calculate_emi(principal: float, annual_rate: float, tenure_years: int) -> fl
 
 def calculate_risk_score(loan: dict) -> dict:
     score = 0
-    factors = []
+    factors: List[Any] = []
     
     rate = loan.get('interestRate', 0)
     if rate > 12:
@@ -126,13 +126,17 @@ def calculate_risk_score(loan: dict) -> dict:
     total = min(100, score)
     level = 'Low' if total <= 30 else 'Moderate' if total <= 60 else 'High'
     
+    # Extract labels for the top 2 factors to avoid complex indexing in the return expression
+    primary_labels = [str(factors[i].get('label', '')) for i in range(min(2, len(factors)))]
+    primary_factors_str = ", ".join(primary_labels) if primary_labels else "None detected"
+    
     return {
         'score': total,
         'level': level,
         'factors': factors,
-        'explanation': f"Risk score of {total}/100 assigned as {level} risk. "
-                       + f"Primary factors: {', '.join([f['label'] for f in factors[:2]]) if factors else 'None detected'}."
+        'explanation': f"Risk score of {total}/100 assigned as {level} risk. Primary factors: {primary_factors_str}."
     }
+
 
 def extract_clauses(text: str, loan_type: str = "Home Loan") -> list:
     clauses = []
@@ -292,16 +296,16 @@ def calculate_emi_api(request: EMIRequest):
         if month % 6 == 0 or month == 1:
             amortization.append({
                 'month': month,
-                'principal': int(round(max(0, principal_component))),
+                'principal': int(round(max(0.0, float(principal_component)))),
                 'interest': int(round(interest_component)),
-                'balance': int(round(max(0, balance))),
+                'balance': int(round(max(0.0, float(balance)))),
             })
     
     return {
         "emi": int(round(emi)),
         "totalRepayment": int(round(total_repayment)),
         "totalInterest": int(round(total_interest)),
-        "interestPercent": round((total_interest / request.principal) * 100, 1),
+        "interestPercent": float(f"{(total_interest / request.principal) * 100:.1f}"),
         "simulations": simulations,
         "amortization": amortization,
     }
@@ -348,11 +352,12 @@ def chat(request: ChatRequest):
 def get_banks(state: Optional[str] = None, loan_type: Optional[str] = None):
     filtered = BANK_DATA
     if state:
-        filtered = [b for b in filtered if state in b.get('states', [])]
+        filtered = [b for b in filtered if any(state == s for s in cast(List[Any], b.get('states', [])))]
     if loan_type:
         filtered = [b for b in filtered if b.get('loanType') == loan_type]
     
-    for loan in filtered:
+    # Cast to dict[str, Any] to allow adding 'riskData' key
+    for loan in cast(List[dict[str, Any]], filtered):
         loan['riskData'] = calculate_risk_score(loan)
     
     return {"banks": filtered, "total": len(filtered)}
