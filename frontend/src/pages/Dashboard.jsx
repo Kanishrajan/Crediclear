@@ -57,8 +57,8 @@ export default function Dashboard() {
         <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
             {/* Welcome Banner */}
             <div style={{
-                background: 'linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(16,185,129,0.1) 100%)',
-                border: '1px solid rgba(99,102,241,0.25)',
+                background: 'linear-gradient(135deg, #f5f3ff 0%, #ecfdf5 100%)',
+                border: '1px solid #e0e7ff',
                 borderRadius: '16px',
                 padding: '24px 32px',
                 display: 'flex',
@@ -70,18 +70,18 @@ export default function Dashboard() {
                 <div style={{
                     position: 'absolute', top: '-40px', right: '-40px',
                     width: '180px', height: '180px',
-                    background: 'radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 70%)',
+                    background: 'radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%)',
                     borderRadius: '50%',
                 }} />
                 <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                        <div style={{ width: '8px', height: '8px', background: '#10b981', borderRadius: '50%', boxShadow: '0 0 8px #10b981' }} />
-                        <span style={{ fontSize: '12px', color: '#10b981', fontWeight: 600 }}>AI SYSTEM ONLINE</span>
+                        <div style={{ width: '8px', height: '8px', background: '#10b981', borderRadius: '50%', boxShadow: '0 0 8px rgba(16,185,129,0.5)' }} />
+                        <span style={{ fontSize: '12px', color: '#059669', fontWeight: 600 }}>AI SYSTEM ONLINE</span>
                     </div>
-                    <h2 style={{ fontSize: '24px', fontWeight: 800, fontFamily: 'Outfit', color: '#f1f5f9', margin: 0 }}>
+                    <h2 style={{ fontSize: '24px', fontWeight: 800, fontFamily: 'Outfit', color: '#1a1a2e', margin: 0 }}>
                         Welcome to <span className="gradient-text">CrediClear AI</span>
                     </h2>
-                    <p style={{ fontSize: '14px', color: '#94a3b8', margin: '6px 0 0' }}>
+                    <p style={{ fontSize: '14px', color: '#64748b', margin: '6px 0 0' }}>
                         India's most advanced AI-powered loan transparency platform • 10 loan types • 8 banks • XAI enabled
                     </p>
                 </div>
@@ -109,10 +109,10 @@ export default function Dashboard() {
                 <div className="card">
                     <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <div>
-                            <h3 style={{ color: '#f1f5f9', fontFamily: 'Outfit', fontSize: '16px', marginBottom: '2px' }}>EMI Trend Comparison</h3>
-                            <p style={{ fontSize: '12px', color: '#64748b' }}>₹50L Home Loan – Monthly EMI across banks</p>
+                            <h3 style={{ color: '#1a1a2e', fontFamily: 'Outfit', fontSize: '16px', marginBottom: '2px' }}>EMI Trend Comparison</h3>
+                            <p style={{ fontSize: '12px', color: '#94a3b8' }}>₹50L Home Loan – Monthly EMI across banks</p>
                         </div>
-                        <span style={{ fontSize: '11px', color: '#6366f1', fontWeight: 600, background: 'rgba(99,102,241,0.1)', padding: '3px 10px', borderRadius: '12px' }}>
+                        <span style={{ fontSize: '11px', color: '#6366f1', fontWeight: 600, background: '#ede9fe', padding: '3px 10px', borderRadius: '12px' }}>
                             6 Months
                         </span>
                     </div>
@@ -120,26 +120,26 @@ export default function Dashboard() {
                         <AreaChart data={emiTrendData}>
                             <defs>
                                 <linearGradient id="sbiGrad" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
+                                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.2} />
                                     <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
                                 </linearGradient>
                                 <linearGradient id="hdfcGrad" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3} />
+                                    <stop offset="5%" stopColor="#ef4444" stopOpacity={0.15} />
                                     <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
                                 </linearGradient>
                                 <linearGradient id="iciciGrad" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#f97316" stopOpacity={0.3} />
+                                    <stop offset="5%" stopColor="#f97316" stopOpacity={0.15} />
                                     <stop offset="95%" stopColor="#f97316" stopOpacity={0} />
                                 </linearGradient>
                             </defs>
-                            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
-                            <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} tickLine={false} />
-                            <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={v => `₹${(v / 1000).toFixed(0)}K`} />
+                            <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" />
+                            <XAxis dataKey="month" tick={{ fill: '#94a3b8', fontSize: 12 }} axisLine={false} tickLine={false} />
+                            <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={v => `₹${(v / 1000).toFixed(0)}K`} />
                             <Tooltip
-                                contentStyle={{ background: '#1a2236', border: '1px solid rgba(99,102,241,0.3)', borderRadius: '8px', color: '#f1f5f9' }}
+                                contentStyle={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '8px', color: '#1a1a2e', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
                                 formatter={(v) => [`₹${v.toLocaleString()}`, '']}
                             />
-                            <Legend wrapperStyle={{ color: '#94a3b8', fontSize: 12 }} />
+                            <Legend wrapperStyle={{ color: '#64748b', fontSize: 12 }} />
                             <Area type="monotone" dataKey="SBI" stroke="#6366f1" fill="url(#sbiGrad)" strokeWidth={2} />
                             <Area type="monotone" dataKey="HDFC" stroke="#ef4444" fill="url(#hdfcGrad)" strokeWidth={2} />
                             <Area type="monotone" dataKey="ICICI" stroke="#f97316" fill="url(#iciciGrad)" strokeWidth={2} />
@@ -150,8 +150,8 @@ export default function Dashboard() {
                 {/* Risk Distribution */}
                 <div className="card" style={{ display: 'flex', flexDirection: 'column' }}>
                     <div style={{ marginBottom: '16px' }}>
-                        <h3 style={{ color: '#f1f5f9', fontFamily: 'Outfit', fontSize: '16px', marginBottom: '2px' }}>Risk Distribution</h3>
-                        <p style={{ fontSize: '12px', color: '#64748b' }}>All tracked bank offers</p>
+                        <h3 style={{ color: '#1a1a2e', fontFamily: 'Outfit', fontSize: '16px', marginBottom: '2px' }}>Risk Distribution</h3>
+                        <p style={{ fontSize: '12px', color: '#94a3b8' }}>All tracked bank offers</p>
                     </div>
                     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
                         <ResponsiveContainer width="100%" height={180}>
@@ -162,7 +162,7 @@ export default function Dashboard() {
                                     ))}
                                 </Pie>
                                 <Tooltip
-                                    contentStyle={{ background: '#1a2236', border: '1px solid rgba(99,102,241,0.3)', borderRadius: '8px', color: '#f1f5f9' }}
+                                    contentStyle={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '8px', color: '#1a1a2e', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
                                 />
                             </PieChart>
                         </ResponsiveContainer>
@@ -171,7 +171,7 @@ export default function Dashboard() {
                                 <div key={item.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                         <div style={{ width: '10px', height: '10px', borderRadius: '2px', background: item.color }} />
-                                        <span style={{ fontSize: '13px', color: '#94a3b8' }}>{item.name}</span>
+                                        <span style={{ fontSize: '13px', color: '#64748b' }}>{item.name}</span>
                                     </div>
                                     <span style={{ fontSize: '13px', fontWeight: 700, color: item.color }}>{item.value}%</span>
                                 </div>
@@ -186,15 +186,15 @@ export default function Dashboard() {
                 {/* Loan Types Bar Chart */}
                 <div className="card">
                     <div style={{ marginBottom: '16px' }}>
-                        <h3 style={{ color: '#f1f5f9', fontFamily: 'Outfit', fontSize: '16px' }}>Loan Types Distribution</h3>
-                        <p style={{ fontSize: '12px', color: '#64748b' }}>Number of bank offers per type</p>
+                        <h3 style={{ color: '#1a1a2e', fontFamily: 'Outfit', fontSize: '16px' }}>Loan Types Distribution</h3>
+                        <p style={{ fontSize: '12px', color: '#94a3b8' }}>Number of bank offers per type</p>
                     </div>
                     <ResponsiveContainer width="100%" height={200}>
                         <BarChart data={loanTypeData} barSize={24}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-                            <XAxis dataKey="name" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
-                            <YAxis tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} />
-                            <Tooltip contentStyle={{ background: '#1a2236', border: '1px solid rgba(99,102,241,0.3)', borderRadius: '8px', color: '#f1f5f9' }} />
+                            <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" vertical={false} />
+                            <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} />
+                            <YAxis tick={{ fill: '#94a3b8', fontSize: 11 }} axisLine={false} tickLine={false} />
+                            <Tooltip contentStyle={{ background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '8px', color: '#1a1a2e', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }} />
                             <Bar dataKey="count" fill="url(#barGrad)" radius={[4, 4, 0, 0]}>
                                 {loanTypeData.map((_, i) => (
                                     <Cell key={i} fill={COLORS[i % COLORS.length]} />
@@ -208,8 +208,8 @@ export default function Dashboard() {
                 <div className="card">
                     <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <div>
-                            <h3 style={{ color: '#f1f5f9', fontFamily: 'Outfit', fontSize: '16px' }}>Best Home Loan Deals</h3>
-                            <p style={{ fontSize: '12px', color: '#64748b' }}>₹50L • Ranked by interest rate</p>
+                            <h3 style={{ color: '#1a1a2e', fontFamily: 'Outfit', fontSize: '16px' }}>Best Home Loan Deals</h3>
+                            <p style={{ fontSize: '12px', color: '#94a3b8' }}>₹50L • Ranked by interest rate</p>
                         </div>
                         <button
                             className="btn-secondary"
@@ -226,29 +226,29 @@ export default function Dashboard() {
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
                                 padding: '12px',
-                                background: i === 0 ? 'rgba(99,102,241,0.08)' : 'rgba(255,255,255,0.02)',
+                                background: i === 0 ? '#faf5ff' : '#fafafa',
                                 borderRadius: '8px',
-                                border: i === 0 ? '1px solid rgba(99,102,241,0.25)' : '1px solid rgba(255,255,255,0.05)',
+                                border: i === 0 ? '1px solid #e0d9ff' : '1px solid #f1f5f9',
                             }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                     <div style={{
                                         width: '32px', height: '32px', borderRadius: '8px',
-                                        background: `${deal.color}22`,
-                                        border: `1px solid ${deal.color}44`,
+                                        background: `${deal.color}15`,
+                                        border: `1px solid ${deal.color}30`,
                                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                                         fontSize: '10px', fontWeight: 800, color: deal.color,
                                     }}>
                                         {deal.logo}
                                     </div>
                                     <div>
-                                        <div style={{ fontSize: '13px', fontWeight: 600, color: '#f1f5f9' }}>{deal.bank} {deal.loanType}</div>
-                                        <div style={{ fontSize: '11px', color: '#64748b' }}>EMI: {formatCurrency(deal.emi)}/mo</div>
+                                        <div style={{ fontSize: '13px', fontWeight: 600, color: '#1a1a2e' }}>{deal.bank} {deal.loanType}</div>
+                                        <div style={{ fontSize: '11px', color: '#94a3b8' }}>EMI: {formatCurrency(deal.emi)}/mo</div>
                                     </div>
                                 </div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                     <div style={{ textAlign: 'right' }}>
                                         <div style={{ fontSize: '15px', fontWeight: 800, color: '#6366f1' }}>{deal.interestRate}%</div>
-                                        <div style={{ fontSize: '11px', color: '#64748b' }}>{deal.rateType}</div>
+                                        <div style={{ fontSize: '11px', color: '#94a3b8' }}>{deal.rateType}</div>
                                     </div>
                                     <RiskBadge level={deal.riskData.level} score={deal.riskData.score} />
                                 </div>
@@ -261,11 +261,11 @@ export default function Dashboard() {
             {/* Recent Alerts */}
             <div className="card">
                 <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h3 style={{ color: '#f1f5f9', fontFamily: 'Outfit', fontSize: '16px' }}>
-                        <AlertTriangle size={16} style={{ color: '#f59e0b', verticalAlign: 'middle', marginRight: '8px' }} />
+                    <h3 style={{ color: '#1a1a2e', fontFamily: 'Outfit', fontSize: '16px' }}>
+                        <AlertTriangle size={16} style={{ color: '#d97706', verticalAlign: 'middle', marginRight: '8px' }} />
                         Recent Risk Alerts
                     </h3>
-                    <span style={{ fontSize: '12px', color: '#64748b' }}>Last 7 days</span>
+                    <span style={{ fontSize: '12px', color: '#94a3b8' }}>Last 7 days</span>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     {recentAlerts.map((alert) => (
@@ -274,25 +274,25 @@ export default function Dashboard() {
                             alignItems: 'center',
                             justifyContent: 'space-between',
                             padding: '12px 14px',
-                            background: 'rgba(255,255,255,0.02)',
+                            background: '#fafafa',
                             borderRadius: '8px',
-                            border: '1px solid rgba(255,255,255,0.05)',
+                            border: '1px solid #f1f5f9',
                         }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                 <div style={{
                                     width: '32px', height: '32px', borderRadius: '8px',
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    background: alert.risk === 'High' ? 'rgba(239,68,68,0.12)' : alert.risk === 'Moderate' ? 'rgba(245,158,11,0.12)' : 'rgba(34,197,94,0.12)',
+                                    background: alert.risk === 'High' ? 'rgba(220,38,38,0.08)' : alert.risk === 'Moderate' ? 'rgba(217,119,6,0.08)' : 'rgba(22,163,74,0.08)',
                                 }}>
                                     {alert.risk === 'High'
-                                        ? <ShieldAlert size={16} color="#ef4444" />
+                                        ? <ShieldAlert size={16} color="#dc2626" />
                                         : alert.risk === 'Moderate'
-                                            ? <AlertTriangle size={16} color="#f59e0b" />
-                                            : <CheckCircle2 size={16} color="#22c55e" />
+                                            ? <AlertTriangle size={16} color="#d97706" />
+                                            : <CheckCircle2 size={16} color="#16a34a" />
                                     }
                                 </div>
                                 <div>
-                                    <div style={{ fontSize: '13px', fontWeight: 600, color: '#f1f5f9' }}>
+                                    <div style={{ fontSize: '13px', fontWeight: 600, color: '#1a1a2e' }}>
                                         {alert.bank} • {alert.type}
                                     </div>
                                     <div style={{ fontSize: '12px', color: '#64748b' }}>{alert.issue}</div>
@@ -300,7 +300,7 @@ export default function Dashboard() {
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                 <RiskBadge level={alert.risk} />
-                                <span style={{ fontSize: '11px', color: '#64748b' }}>{alert.time}</span>
+                                <span style={{ fontSize: '11px', color: '#94a3b8' }}>{alert.time}</span>
                             </div>
                         </div>
                     ))}

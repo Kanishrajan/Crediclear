@@ -22,7 +22,7 @@ export function RiskGauge({ score, size = 200 }) {
                     <path
                         d={`M ${strokeWidth / 2} ${size * 0.58} A ${radius} ${radius} 0 0 1 ${size - strokeWidth / 2} ${size * 0.58}`}
                         fill="none"
-                        stroke="rgba(255,255,255,0.08)"
+                        stroke="rgba(0,0,0,0.08)"
                         strokeWidth={strokeWidth}
                         strokeLinecap="round"
                     />
@@ -87,8 +87,8 @@ export function StatCard({ icon, label, value, trend, color = '#6366f1', subtitl
                 <div style={{
                     width: '44px', height: '44px',
                     borderRadius: '10px',
-                    background: `${color}22`,
-                    border: `1px solid ${color}44`,
+                    background: `${color}18`,
+                    border: `1px solid ${color}30`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: '22px',
                 }}>
@@ -98,7 +98,7 @@ export function StatCard({ icon, label, value, trend, color = '#6366f1', subtitl
                     <div style={{
                         fontSize: '12px',
                         fontWeight: 600,
-                        color: trend >= 0 ? '#22c55e' : '#ef4444',
+                        color: trend >= 0 ? '#16a34a' : '#dc2626',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '2px',
@@ -108,9 +108,9 @@ export function StatCard({ icon, label, value, trend, color = '#6366f1', subtitl
                 )}
             </div>
             <div>
-                <div style={{ fontSize: '24px', fontWeight: 800, color: '#f1f5f9', fontFamily: 'Outfit' }}>{value}</div>
-                <div style={{ fontSize: '13px', color: '#94a3b8', marginTop: '2px' }}>{label}</div>
-                {subtitle && <div style={{ fontSize: '11px', color: '#64748b', marginTop: '4px' }}>{subtitle}</div>}
+                <div style={{ fontSize: '24px', fontWeight: 800, color: '#1a1a2e', fontFamily: 'Outfit' }}>{value}</div>
+                <div style={{ fontSize: '13px', color: '#475569', marginTop: '2px' }}>{label}</div>
+                {subtitle && <div style={{ fontSize: '11px', color: '#94a3b8', marginTop: '4px' }}>{subtitle}</div>}
             </div>
         </div>
     );
@@ -119,9 +119,9 @@ export function StatCard({ icon, label, value, trend, color = '#6366f1', subtitl
 // Risk Badge
 export function RiskBadge({ level, score }) {
     const config = {
-        Low: { bg: 'rgba(34,197,94,0.15)', border: 'rgba(34,197,94,0.3)', color: '#22c55e' },
-        Moderate: { bg: 'rgba(245,158,11,0.15)', border: 'rgba(245,158,11,0.3)', color: '#f59e0b' },
-        High: { bg: 'rgba(239,68,68,0.15)', border: 'rgba(239,68,68,0.3)', color: '#ef4444' },
+        Low: { bg: 'rgba(22,163,74,0.08)', border: 'rgba(22,163,74,0.25)', color: '#16a34a' },
+        Moderate: { bg: 'rgba(217,119,6,0.08)', border: 'rgba(217,119,6,0.25)', color: '#d97706' },
+        High: { bg: 'rgba(220,38,38,0.08)', border: 'rgba(220,38,38,0.25)', color: '#dc2626' },
     };
     const c = config[level] || config.Low;
     return (
@@ -186,13 +186,13 @@ export function ClauseCard({ clause, index }) {
                         fontWeight: 700,
                         padding: '2px 8px',
                         borderRadius: '4px',
-                        background: 'rgba(99,102,241,0.2)',
-                        color: '#818cf8',
+                        background: 'rgba(99,102,241,0.1)',
+                        color: '#6366f1',
                         letterSpacing: '0.5px',
                     }}>
                         {clause.type}
                     </span>
-                    <span style={{ fontSize: '14px', fontWeight: 600, color: '#f1f5f9' }}>{clause.label}</span>
+                    <span style={{ fontSize: '14px', fontWeight: 600, color: '#1a1a2e' }}>{clause.label}</span>
                 </div>
                 <span style={{
                     fontSize: '11px',
@@ -206,14 +206,14 @@ export function ClauseCard({ clause, index }) {
                     {clause.risk}
                 </span>
             </div>
-            <div style={{ fontSize: '14px', color: '#94a3b8', marginBottom: '8px', fontWeight: 500, display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
+            <div style={{ fontSize: '14px', color: '#64748b', marginBottom: '8px', fontWeight: 500, display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
                 <MapPin size={13} color="#6366f1" style={{ marginTop: '2px', flexShrink: 0 }} />
                 {clause.value}
             </div>
             <div style={{
                 fontSize: '13px',
-                color: '#f1f5f9',
-                background: 'rgba(0,0,0,0.2)',
+                color: '#334155',
+                background: '#f8fafc',
                 borderRadius: '6px',
                 padding: '8px 12px',
                 borderLeft: `3px solid ${c.badge}`,
@@ -233,7 +233,7 @@ export function ClauseCard({ clause, index }) {
                         fontSize: '12px',
                         color: '#64748b',
                         fontStyle: 'italic',
-                        background: 'rgba(0,0,0,0.15)',
+                        background: '#f8f9fa',
                         padding: '8px',
                         borderRadius: '6px',
                         lineHeight: 1.6,
@@ -284,7 +284,7 @@ export function EmptyState({ icon, title, description, action }) {
             gap: '16px',
         }}>
             <div style={{ fontSize: '64px', filter: 'grayscale(0.3)' }}>{icon}</div>
-            <div style={{ fontSize: '18px', fontWeight: 700, color: '#f1f5f9', fontFamily: 'Outfit' }}>{title}</div>
+            <div style={{ fontSize: '18px', fontWeight: 700, color: '#1a1a2e', fontFamily: 'Outfit' }}>{title}</div>
             <div style={{ fontSize: '14px', color: '#64748b', maxWidth: '300px', lineHeight: 1.6 }}>{description}</div>
             {action}
         </div>

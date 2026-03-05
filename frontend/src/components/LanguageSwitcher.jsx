@@ -4,9 +4,9 @@ import { useLanguage } from '../context/LanguageContext';
 /**
  * LanguageSwitcher – A polished dropdown for switching between English, Tamil and Hindi.
  * Props:
- *   variant: 'dark' (default – for dashboard TopBar) | 'nav' (for LandingPage navbar)
+ *   variant: 'light' (dashboard TopBar) | 'nav' (LandingPage navbar) | 'dark' (legacy)
  */
-export default function LanguageSwitcher({ variant = 'dark' }) {
+export default function LanguageSwitcher({ variant = 'light' }) {
     const { lang, setLang, LANGUAGES } = useLanguage();
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
@@ -23,17 +23,26 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
     }, []);
 
     const isNav = variant === 'nav';
+    const isDark = variant === 'dark';
 
     const triggerStyle = {
         display: 'flex',
         alignItems: 'center',
         gap: '6px',
         padding: isNav ? '7px 14px' : '6px 12px',
-        background: isNav ? 'rgba(99,102,241,0.08)' : 'rgba(31,45,68,0.8)',
-        border: `1px solid ${open ? 'rgba(99,102,241,0.5)' : 'rgba(99,102,241,0.22)'}`,
+        background: isDark
+            ? 'rgba(31,45,68,0.8)'
+            : isNav
+                ? 'rgba(99,102,241,0.08)'
+                : '#f8f9fa',
+        border: `1px solid ${open
+            ? '#c7d2fe'
+            : isDark
+                ? 'rgba(99,102,241,0.22)'
+                : '#e5e7eb'}`,
         borderRadius: '8px',
         cursor: 'pointer',
-        color: isNav ? '#94a3b8' : '#94a3b8',
+        color: isDark ? '#94a3b8' : '#64748b',
         fontSize: '13px',
         fontWeight: 500,
         fontFamily: 'Inter, sans-serif',
@@ -46,11 +55,11 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
         position: 'absolute',
         top: 'calc(100% + 8px)',
         right: 0,
-        background: '#111827',
-        border: '1px solid rgba(99,102,241,0.25)',
+        background: '#ffffff',
+        border: '1px solid #e5e7eb',
         borderRadius: '10px',
         minWidth: '160px',
-        boxShadow: '0 16px 48px rgba(0,0,0,0.55)',
+        boxShadow: '0 12px 40px rgba(0,0,0,0.1)',
         zIndex: 9999,
         overflow: 'hidden',
         animation: 'langDropIn 0.18s ease forwards',
@@ -71,24 +80,20 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
           cursor: pointer;
           font-size: 13px;
           font-family: Inter, sans-serif;
-          color: #94a3b8;
+          color: #475569;
           transition: background 0.15s, color 0.15s;
         }
         .lang-option:hover {
-          background: rgba(99,102,241,0.12);
-          color: #f1f5f9;
+          background: #f1f5ff;
+          color: #4f46e5;
         }
         .lang-option.active {
-          background: rgba(99,102,241,0.18);
-          color: #818cf8;
+          background: #ede9fe;
+          color: #4f46e5;
           font-weight: 600;
         }
-        .lang-chevron {
-          transition: transform 0.2s;
-        }
-        .lang-chevron.open {
-          transform: rotate(180deg);
-        }
+        .lang-chevron { transition: transform 0.2s; }
+        .lang-chevron.open { transform: rotate(180deg); }
       `}</style>
 
             <div ref={ref} style={{ position: 'relative' }}>
@@ -107,12 +112,9 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
                     </svg>
                     <span>{current.label}</span>
                     <svg
-                        width="11"
-                        height="11"
+                        width="11" height="11"
                         viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
+                        fill="none" stroke="currentColor" strokeWidth="2.5"
                         className={`lang-chevron${open ? ' open' : ''}`}
                     >
                         <polyline points="6 9 12 15 18 9" />
@@ -127,9 +129,9 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
                             fontSize: '10px',
                             fontWeight: 700,
                             letterSpacing: '1.5px',
-                            color: '#475569',
+                            color: '#94a3b8',
                             textTransform: 'uppercase',
-                            borderBottom: '1px solid rgba(255,255,255,0.05)',
+                            borderBottom: '1px solid #f1f5f9',
                         }}>
                             Language
                         </div>
@@ -145,7 +147,7 @@ export default function LanguageSwitcher({ variant = 'dark' }) {
                                 <span style={{ fontSize: '16px' }}>{l.flag}</span>
                                 <span>{l.label}</span>
                                 {l.code === lang && (
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#818cf8" strokeWidth="2.5" style={{ marginLeft: 'auto' }}>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="2.5" style={{ marginLeft: 'auto' }}>
                                         <polyline points="20 6 9 17 4 12" />
                                     </svg>
                                 )}

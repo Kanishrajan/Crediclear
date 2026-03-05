@@ -22,25 +22,25 @@ export default function App() {
         path="/app/*"
         element={
           <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-base)', position: 'relative' }}>
-            {/* Ambient background blobs */}
+            {/* Ambient background blobs – subtle in light theme */}
             <div style={{
               position: 'fixed',
-              top: '-100px',
+              top: '-80px',
               left: '200px',
               width: '400px',
               height: '400px',
-              background: 'radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(99,102,241,0.05) 0%, transparent 70%)',
               borderRadius: '50%',
               pointerEvents: 'none',
               zIndex: 0,
             }} />
             <div style={{
               position: 'fixed',
-              bottom: '-50px',
+              bottom: '-40px',
               right: '100px',
               width: '300px',
               height: '300px',
-              background: 'radial-gradient(circle, rgba(16,185,129,0.06) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(16,185,129,0.04) 0%, transparent 70%)',
               borderRadius: '50%',
               pointerEvents: 'none',
               zIndex: 0,

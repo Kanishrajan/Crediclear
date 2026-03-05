@@ -313,7 +313,7 @@ export default function LandingPage() {
     const steps = t.howItWorks.steps.map((s, i) => ({ num: String(i + 1).padStart(2, '0'), title: s.title, desc: s.desc }));
 
     return (
-        <div style={{ background: '#070b14', color: '#f1f5f9', fontFamily: 'Inter, sans-serif', position: 'relative', overflowX: 'hidden' }}>
+        <div style={{ background: '#ffffff', color: '#1a1a2e', fontFamily: 'Inter, sans-serif', position: 'relative', overflowX: 'hidden' }}>
             <style>{`
         @keyframes floatPreview {
           0%, 100% { transform: rotateX(8deg) rotateY(-4deg) translateY(0px); }
@@ -357,8 +357,8 @@ export default function LandingPage() {
         }
         .landing-btn-ghost {
           background: transparent;
-          color: #94a3b8;
-          border: 1px solid rgba(99,102,241,0.3);
+          color: #64748b;
+          border: 1px solid #e2e8f0;
           padding: 14px 36px;
           border-radius: 10px;
           font-size: 15px;
@@ -372,21 +372,21 @@ export default function LandingPage() {
         }
         .landing-btn-ghost:hover {
           border-color: #6366f1;
-          color: #f1f5f9;
-          background: rgba(99,102,241,0.08);
+          color: #4f46e5;
+          background: rgba(99,102,241,0.06);
         }
         .feature-card {
-          background: rgba(17,24,39,0.6);
-          border: 1px solid rgba(99,102,241,0.12);
+          background: #ffffff;
+          border: 1px solid #f1f5f9;
           border-radius: 14px;
           padding: 28px;
           transition: all 0.3s;
-          backdrop-filter: blur(8px);
+          box-shadow: 0 1px 4px rgba(0,0,0,0.04);
         }
         .feature-card:hover {
-          border-color: rgba(99,102,241,0.35);
-          background: rgba(26,34,54,0.8);
-          box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+          border-color: rgba(99,102,241,0.3);
+          background: #fafbff;
+          box-shadow: 0 8px 30px rgba(99,102,241,0.1);
         }
         .section-label {
           font-size: 11px;
@@ -397,7 +397,7 @@ export default function LandingPage() {
           margin-bottom: 12px;
         }
         .nav-link {
-          color: #94a3b8;
+          color: #64748b;
           font-size: 14px;
           font-weight: 500;
           cursor: pointer;
@@ -407,14 +407,14 @@ export default function LandingPage() {
           border: none;
           font-family: Inter, sans-serif;
         }
-        .nav-link:hover { color: #f1f5f9; }
+        .nav-link:hover { color: #4f46e5; }
         .step-line {
           position: absolute;
           left: 19px;
           top: 44px;
           bottom: -20px;
           width: 1px;
-          background: linear-gradient(180deg, rgba(99,102,241,0.4), transparent);
+          background: linear-gradient(180deg, rgba(99,102,241,0.3), transparent);
         }
       `}</style>
 
@@ -434,9 +434,9 @@ export default function LandingPage() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                background: scrolled ? 'rgba(7,11,20,0.92)' : 'transparent',
+                background: scrolled ? 'rgba(255,255,255,0.95)' : 'transparent',
                 backdropFilter: scrolled ? 'blur(16px)' : 'none',
-                borderBottom: scrolled ? '1px solid rgba(99,102,241,0.12)' : 'none',
+                borderBottom: scrolled ? '1px solid #e5e7eb' : 'none',
                 transition: 'all 0.4s',
             }}>
                 {/* Logo */}
@@ -452,7 +452,7 @@ export default function LandingPage() {
                         </svg>
                     </div>
                     <div>
-                        <span style={{ fontSize: '16px', fontWeight: 800, fontFamily: 'Outfit', color: '#f1f5f9' }}>CrediClear</span>
+                        <span style={{ fontSize: '16px', fontWeight: 800, fontFamily: 'Outfit', color: '#1a1a2e' }}>CrediClear</span>
                         <span style={{ fontSize: '10px', color: '#6366f1', fontWeight: 700, letterSpacing: '1px', display: 'block', lineHeight: 1, marginTop: '1px' }}>AI PLATFORM</span>
                     </div>
                 </div>
@@ -510,7 +510,7 @@ export default function LandingPage() {
                         marginBottom: '28px',
                     }}>
                         <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981' }} />
-                        <span style={{ fontSize: '12px', fontWeight: 600, color: '#94a3b8', letterSpacing: '0.5px' }}>
+                        <span style={{ fontSize: '12px', fontWeight: 600, color: '#6366f1', letterSpacing: '0.5px' }}>
                             {t.hero.badge}
                         </span>
                     </div>
@@ -523,7 +523,7 @@ export default function LandingPage() {
                         lineHeight: 1.08,
                         letterSpacing: '-1.5px',
                         marginBottom: '20px',
-                        color: '#f1f5f9',
+                        color: '#1a1a2e',
                     }}>
                         {t.hero.headline1}<br />
                         <span style={{
@@ -571,11 +571,11 @@ export default function LandingPage() {
                             { label: t.hero.trust3Label, sub: t.hero.trust3Sub },
                         ].map((item, i) => (
                             <div key={i} style={{ display: 'flex', flexDirection: 'column' }}>
-                                <span style={{ fontSize: '15px', fontWeight: 700, color: '#f1f5f9' }}>{item.label}</span>
-                                <span style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>{item.sub}</span>
+                                <span style={{ fontSize: '15px', fontWeight: 700, color: '#1a1a2e' }}>{item.label}</span>
+                                <span style={{ fontSize: '12px', color: '#94a3b8', marginTop: '2px' }}>{item.sub}</span>
                             </div>
                         )).reduce((acc, el, i) => {
-                            if (i > 0) acc.push(<div key={`d${i}`} style={{ width: '1px', height: '28px', background: 'rgba(255,255,255,0.08)' }} />);
+                            if (i > 0) acc.push(<div key={`d${i}`} style={{ width: '1px', height: '28px', background: 'rgba(0,0,0,0.1)' }} />);
                             acc.push(el);
                             return acc;
                         }, [])}
@@ -593,7 +593,7 @@ export default function LandingPage() {
                 <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                     <div style={{ textAlign: 'center', marginBottom: '64px' }}>
                         <div className="section-label">{t.features.sectionLabel}</div>
-                        <h2 style={{ fontSize: 'clamp(28px, 3vw, 42px)', fontWeight: 800, fontFamily: 'Outfit', letterSpacing: '-0.8px', color: '#f1f5f9', marginBottom: '14px' }}>
+                        <h2 style={{ fontSize: 'clamp(28px, 3vw, 42px)', fontWeight: 800, fontFamily: 'Outfit', letterSpacing: '-0.8px', color: '#1a1a2e', marginBottom: '14px' }}>
                             {t.features.heading}
                         </h2>
                         <p style={{ fontSize: '16px', color: '#64748b', maxWidth: '520px', margin: '0 auto', lineHeight: 1.7 }}>
@@ -616,7 +616,7 @@ export default function LandingPage() {
                                     }}>
                                         {f.icon}
                                     </div>
-                                    <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#f1f5f9', marginBottom: '10px', fontFamily: 'Outfit' }}>{f.title}</h3>
+                                    <h3 style={{ fontSize: '16px', fontWeight: 700, color: '#1a1a2e', marginBottom: '10px', fontFamily: 'Outfit' }}>{f.title}</h3>
                                     <p style={{ fontSize: '14px', color: '#64748b', lineHeight: 1.7 }}>{f.desc}</p>
                                 </div>
                             </TiltCard>
@@ -630,8 +630,8 @@ export default function LandingPage() {
                 <div style={{
                     maxWidth: '1100px',
                     margin: '0 auto',
-                    background: 'linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(16,185,129,0.05) 100%)',
-                    border: '1px solid rgba(99,102,241,0.18)',
+                    background: 'linear-gradient(135deg, #f5f3ff 0%, #ecfdf5 100%)',
+                    border: '1px solid #e0e7ff',
                     borderRadius: '20px',
                     padding: '56px 64px',
                     display: 'grid',
@@ -648,13 +648,13 @@ export default function LandingPage() {
                         <div key={i} style={{
                             textAlign: 'center',
                             padding: '0 24px',
-                            borderRight: i < stats.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                            borderRight: i < stats.length - 1 ? '1px solid rgba(0,0,0,0.08)' : 'none',
                         }}>
-                            <div style={{ fontSize: '44px', fontWeight: 900, fontFamily: 'Outfit', color: '#f1f5f9', lineHeight: 1, marginBottom: '8px' }}>
+                            <div style={{ fontSize: '44px', fontWeight: 900, fontFamily: 'Outfit', color: '#1a1a2e', lineHeight: 1, marginBottom: '8px' }}>
                                 <AnimatedNumber target={s.value} suffix={s.suffix} />
                             </div>
-                            <div style={{ fontSize: '14px', fontWeight: 700, color: '#94a3b8', marginBottom: '4px' }}>{s.label}</div>
-                            <div style={{ fontSize: '12px', color: '#475569' }}>{s.sub}</div>
+                            <div style={{ fontSize: '14px', fontWeight: 700, color: '#475569', marginBottom: '4px' }}>{s.label}</div>
+                            <div style={{ fontSize: '12px', color: '#94a3b8' }}>{s.sub}</div>
                         </div>
                     ))}
                 </div>
@@ -665,7 +665,7 @@ export default function LandingPage() {
                 <div style={{ maxWidth: '900px', margin: '0 auto' }}>
                     <div style={{ textAlign: 'center', marginBottom: '64px' }}>
                         <div className="section-label">{t.howItWorks.sectionLabel}</div>
-                        <h2 style={{ fontSize: 'clamp(28px, 3vw, 40px)', fontWeight: 800, fontFamily: 'Outfit', letterSpacing: '-0.8px', color: '#f1f5f9', marginBottom: '12px' }}>
+                        <h2 style={{ fontSize: 'clamp(28px, 3vw, 40px)', fontWeight: 800, fontFamily: 'Outfit', letterSpacing: '-0.8px', color: '#1a1a2e', marginBottom: '12px' }}>
                             {t.howItWorks.heading}
                         </h2>
                         <p style={{ fontSize: '15px', color: '#64748b', lineHeight: 1.7 }}>
@@ -700,7 +700,7 @@ export default function LandingPage() {
                                     <div style={{ fontSize: '11px', fontWeight: 700, color: '#6366f1', letterSpacing: '1.5px', marginBottom: '6px' }}>
                                         STEP {step.num}
                                     </div>
-                                    <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#f1f5f9', fontFamily: 'Outfit', marginBottom: '8px' }}>{step.title}</h3>
+                                    <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#1a1a2e', fontFamily: 'Outfit', marginBottom: '8px' }}>{step.title}</h3>
                                     <p style={{ fontSize: '14px', color: '#64748b', lineHeight: 1.7 }}>{step.desc}</p>
                                 </div>
                             </div>
@@ -715,8 +715,8 @@ export default function LandingPage() {
                     maxWidth: '900px',
                     margin: '0 auto',
                     textAlign: 'center',
-                    background: 'linear-gradient(135deg, rgba(99,102,241,0.12) 0%, rgba(16,185,129,0.08) 100%)',
-                    border: '1px solid rgba(99,102,241,0.2)',
+                    background: 'linear-gradient(135deg, #f5f3ff 0%, #ecfdf5 100%)',
+                    border: '1px solid #e0e7ff',
                     borderRadius: '24px',
                     padding: '72px 48px',
                     position: 'relative',
@@ -725,7 +725,7 @@ export default function LandingPage() {
                     <div style={{ position: 'absolute', top: '-60px', left: '50%', transform: 'translateX(-50%)', width: '300px', height: '300px', background: 'radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%)', borderRadius: '50%', pointerEvents: 'none' }} />
 
                     <div className="section-label" style={{ marginBottom: '16px' }}>{t.cta.sectionLabel}</div>
-                    <h2 style={{ fontSize: 'clamp(26px, 3vw, 38px)', fontWeight: 800, fontFamily: 'Outfit', letterSpacing: '-0.8px', color: '#f1f5f9', marginBottom: '16px' }}>
+                    <h2 style={{ fontSize: 'clamp(26px, 3vw, 38px)', fontWeight: 800, fontFamily: 'Outfit', letterSpacing: '-0.8px', color: '#1a1a2e', marginBottom: '16px' }}>
                         {t.cta.heading}
                     </h2>
                     <p style={{ fontSize: '15px', color: '#64748b', maxWidth: '480px', margin: '0 auto 36px', lineHeight: 1.7 }}>
@@ -742,7 +742,7 @@ export default function LandingPage() {
 
             {/* ── Footer ────────────────────────────────────────────────────── */}
             <footer style={{
-                borderTop: '1px solid rgba(99,102,241,0.1)',
+                borderTop: '1px solid #e5e7eb',
                 padding: '32px 48px',
                 position: 'relative',
                 zIndex: 1,
@@ -751,7 +751,7 @@ export default function LandingPage() {
                 alignItems: 'center',
                 flexWrap: 'wrap',
                 gap: '16px',
-                background: 'rgba(7,11,20,0.8)',
+                background: '#f8f9fa',
             }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <div style={{ width: '28px', height: '28px', background: 'linear-gradient(135deg,#6366f1,#10b981)', borderRadius: '7px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -759,7 +759,7 @@ export default function LandingPage() {
                             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                         </svg>
                     </div>
-                    <span style={{ fontSize: '14px', fontWeight: 700, color: '#f1f5f9', fontFamily: 'Outfit' }}>CrediClear AI</span>
+                    <span style={{ fontSize: '14px', fontWeight: 700, color: '#1a1a2e', fontFamily: 'Outfit' }}>CrediClear AI</span>
                 </div>
                 <div style={{ display: 'flex', gap: '28px' }}>
                     {['Features', 'How It Works', 'Statistics'].map(link => (
