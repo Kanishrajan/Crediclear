@@ -12,7 +12,6 @@ const CLAUSE_TYPES = [
 ];
 
 function simulateAnalysis(fileName) {
-    // For demo: pick home_loan_sbi or personal_loan_hdfc
     if (fileName && fileName.toLowerCase().includes('hdfc')) {
         return DEMO_DOCUMENTS['personal_loan_hdfc'];
     }
@@ -25,7 +24,6 @@ export default function DocumentAnalyzer() {
     const [selectedLoanType, setSelectedLoanType] = useState('Home Loan');
     const [uploadedFile, setUploadedFile] = useState(null);
     const [activeTab, setActiveTab] = useState('clauses');
-    const [demoMode, setDemoMode] = useState(false);
 
     const onDrop = useCallback((acceptedFiles) => {
         const file = acceptedFiles[0];
@@ -42,9 +40,8 @@ export default function DocumentAnalyzer() {
     });
 
     const handleAnalyze = async () => {
-        if (!uploadedFile && !demoMode) return;
+        if (!uploadedFile) return;
         setAnalysisLoading(true);
-        // Simulate API call
         await new Promise(r => setTimeout(r, 2500));
         const result = simulateAnalysis(uploadedFile?.name || 'sbi_home.pdf');
         setAnalysisResult(result);
@@ -66,8 +63,8 @@ export default function DocumentAnalyzer() {
         <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
             {/* Header */}
             <div style={{
-                background: 'linear-gradient(135deg, rgba(99,102,241,0.12), rgba(16,185,129,0.08))',
-                border: '1px solid rgba(99,102,241,0.2)',
+                background: 'linear-gradient(135deg, #f5f3ff, #ecfdf5)',
+                border: '1px solid #e0e7ff',
                 borderRadius: '12px',
                 padding: '20px 24px',
                 display: 'flex',
@@ -75,11 +72,11 @@ export default function DocumentAnalyzer() {
                 alignItems: 'center',
             }}>
                 <div>
-                    <h2 style={{ fontFamily: 'Outfit', fontSize: '20px', fontWeight: 700, color: '#f1f5f9', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <h2 style={{ fontFamily: 'Outfit', fontSize: '20px', fontWeight: 700, color: '#1a1a2e', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <Brain size={20} color="#6366f1" />
                         Smart Document Analyzer
                     </h2>
-                    <p style={{ fontSize: '13px', color: '#94a3b8', marginTop: '4px' }}>
+                    <p style={{ fontSize: '13px', color: '#64748b', marginTop: '4px' }}>
                         AI-powered clause extraction • NER-based entity detection • XAI risk explanation
                     </p>
                 </div>
@@ -103,10 +100,10 @@ export default function DocumentAnalyzer() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     {/* Config */}
                     <div className="card">
-                        <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#f1f5f9', marginBottom: '16px' }}>Configuration</h3>
+                        <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#1a1a2e', marginBottom: '16px' }}>Configuration</h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                             <div>
-                                <label style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '6px', display: 'block' }}>Document Type</label>
+                                <label style={{ fontSize: '12px', color: '#64748b', marginBottom: '6px', display: 'block' }}>Document Type</label>
                                 <select
                                     className="input-field"
                                     value={selectedDocType}
@@ -116,7 +113,7 @@ export default function DocumentAnalyzer() {
                                 </select>
                             </div>
                             <div>
-                                <label style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '6px', display: 'block' }}>Loan Type</label>
+                                <label style={{ fontSize: '12px', color: '#64748b', marginBottom: '6px', display: 'block' }}>Loan Type</label>
                                 <select
                                     className="input-field"
                                     value={selectedLoanType}
@@ -130,7 +127,7 @@ export default function DocumentAnalyzer() {
 
                     {/* Upload */}
                     <div className="card">
-                        <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#f1f5f9', marginBottom: '12px' }}>Upload Document</h3>
+                        <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#1a1a2e', marginBottom: '12px' }}>Upload Document</h3>
                         <div
                             {...getRootProps()}
                             className={`upload-area ${isDragActive ? 'dragging' : ''}`}
@@ -139,17 +136,17 @@ export default function DocumentAnalyzer() {
                             <input {...getInputProps()} />
                             {uploadedFile ? (
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-                                    <CheckCircle size={40} color="#22c55e" />
-                                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#22c55e' }}>{uploadedFile.name}</div>
+                                    <CheckCircle size={40} color="#16a34a" />
+                                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#16a34a' }}>{uploadedFile.name}</div>
                                     <div style={{ fontSize: '12px', color: '#64748b' }}>Ready to analyze</div>
                                 </div>
                             ) : (
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
                                     <Upload size={36} color="#6366f1" style={{ opacity: 0.7 }} />
-                                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#f1f5f9' }}>
+                                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#1a1a2e' }}>
                                         {isDragActive ? 'Drop PDF here' : 'Upload Loan PDF'}
                                     </div>
-                                    <div style={{ fontSize: '12px', color: '#64748b' }}>Drag & drop or click • PDF only • Max 20MB</div>
+                                    <div style={{ fontSize: '12px', color: '#94a3b8' }}>Drag & drop or click • PDF only • Max 20MB</div>
                                 </div>
                             )}
                         </div>
@@ -165,18 +162,18 @@ export default function DocumentAnalyzer() {
                         </button>
                     </div>
 
-                    {/* Supported types */}
+                    {/* NLP Entity Tags */}
                     <div className="card">
-                        <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#94a3b8', marginBottom: '10px' }}>NLP ENTITIES DETECTED</h3>
+                        <h3 style={{ fontSize: '13px', fontWeight: 700, color: '#64748b', marginBottom: '10px' }}>NLP ENTITIES DETECTED</h3>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                             {CLAUSE_TYPES.map(type => (
                                 <span key={type} style={{
                                     fontSize: '11px',
                                     padding: '2px 8px',
                                     borderRadius: '4px',
-                                    background: 'rgba(99,102,241,0.1)',
-                                    border: '1px solid rgba(99,102,241,0.2)',
-                                    color: '#818cf8',
+                                    background: 'rgba(99,102,241,0.08)',
+                                    border: '1px solid rgba(99,102,241,0.18)',
+                                    color: '#6366f1',
                                     fontWeight: 600,
                                 }}>
                                     {type}
@@ -192,13 +189,13 @@ export default function DocumentAnalyzer() {
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', padding: '40px' }}>
                             <div style={{
                                 width: '64px', height: '64px',
-                                border: '3px solid rgba(99,102,241,0.2)',
+                                border: '3px solid rgba(99,102,241,0.15)',
                                 borderTop: '3px solid #6366f1',
                                 borderRadius: '50%',
                                 animation: 'spin-slow 0.8s linear infinite',
                             }} />
                             <div style={{ textAlign: 'center' }}>
-                                <div style={{ fontSize: '18px', fontWeight: 700, color: '#f1f5f9', fontFamily: 'Outfit' }}>Analyzing Document</div>
+                                <div style={{ fontSize: '18px', fontWeight: 700, color: '#1a1a2e', fontFamily: 'Outfit' }}>Analyzing Document</div>
                                 <div style={{ fontSize: '13px', color: '#64748b', marginTop: '8px' }}>
                                     Extracting clauses • Running NER • Calculating risk score...
                                 </div>
@@ -209,8 +206,8 @@ export default function DocumentAnalyzer() {
                                         fontSize: '11px',
                                         padding: '3px 10px',
                                         borderRadius: '12px',
-                                        background: 'rgba(99,102,241,0.1)',
-                                        border: '1px solid rgba(99,102,241,0.25)',
+                                        background: 'rgba(99,102,241,0.08)',
+                                        border: '1px solid rgba(99,102,241,0.2)',
                                         color: '#6366f1',
                                         fontWeight: 600,
                                         animation: 'pulse-glow 1.5s ease-in-out infinite',
@@ -228,9 +225,9 @@ export default function DocumentAnalyzer() {
                         <div className="card" style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '20px', alignItems: 'start' }}>
                             <div>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                                    <CheckCircle size={18} color="#22c55e" />
-                                    <span style={{ fontSize: '15px', fontWeight: 700, color: '#f1f5f9' }}>Analysis Complete</span>
-                                    <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '10px', background: 'rgba(99,102,241,0.1)', color: '#818cf8', fontWeight: 600 }}>
+                                    <CheckCircle size={18} color="#16a34a" />
+                                    <span style={{ fontSize: '15px', fontWeight: 700, color: '#1a1a2e' }}>Analysis Complete</span>
+                                    <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '10px', background: 'rgba(99,102,241,0.08)', color: '#6366f1', fontWeight: 600 }}>
                                         {analysisResult.bank} • {analysisResult.loanType}
                                     </span>
                                 </div>
@@ -241,24 +238,24 @@ export default function DocumentAnalyzer() {
                                         { label: 'Interest Rate', value: `${analysisResult.interestRate}% (${analysisResult.rateType})` },
                                         { label: 'Monthly EMI', value: `₹${analysisResult.emi?.toLocaleString()}` },
                                     ].map(item => (
-                                        <div key={item.label} style={{ background: 'rgba(99,102,241,0.05)', borderRadius: '8px', padding: '10px' }}>
+                                        <div key={item.label} style={{ background: '#f8fafc', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '10px' }}>
                                             <div style={{ fontSize: '11px', color: '#64748b', marginBottom: '4px' }}>{item.label}</div>
-                                            <div style={{ fontSize: '14px', fontWeight: 700, color: '#f1f5f9' }}>{item.value}</div>
+                                            <div style={{ fontSize: '14px', fontWeight: 700, color: '#1a1a2e' }}>{item.value}</div>
                                         </div>
                                     ))}
                                 </div>
 
-                                <div style={{ fontSize: '13px', color: '#94a3b8', lineHeight: 1.7, background: 'rgba(0,0,0,0.2)', padding: '12px', borderRadius: '8px' }}>
+                                <div style={{ fontSize: '13px', color: '#475569', lineHeight: 1.7, background: '#f8fafc', border: '1px solid #e5e7eb', padding: '12px', borderRadius: '8px' }}>
                                     <Info size={14} style={{ verticalAlign: 'middle', marginRight: '6px', color: '#6366f1' }} />
-                                    <strong style={{ color: '#f1f5f9' }}>AI Summary:</strong> {analysisResult.summary}
+                                    <strong style={{ color: '#1a1a2e' }}>AI Summary:</strong> {analysisResult.summary}
                                 </div>
 
                                 {/* Risk Summary */}
                                 <div style={{ display: 'flex', gap: '8px', marginTop: '12px', flexWrap: 'wrap' }}>
-                                    <div style={{ fontSize: '12px', padding: '4px 10px', borderRadius: '12px', background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', color: '#ef4444', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                    <div style={{ fontSize: '12px', padding: '4px 10px', borderRadius: '12px', background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.2)', color: '#dc2626', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '5px' }}>
                                         <ShieldAlert size={11} /> {highRiskClauses.length} High Risk Clause{highRiskClauses.length !== 1 ? 's' : ''}
                                     </div>
-                                    <div style={{ fontSize: '12px', padding: '4px 10px', borderRadius: '12px', background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.3)', color: '#f59e0b', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                    <div style={{ fontSize: '12px', padding: '4px 10px', borderRadius: '12px', background: 'rgba(217,119,6,0.08)', border: '1px solid rgba(217,119,6,0.2)', color: '#d97706', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '5px' }}>
                                         <AlertTriangle size={11} /> {moderateClauses.length} Moderate Risks
                                     </div>
                                 </div>
@@ -272,7 +269,7 @@ export default function DocumentAnalyzer() {
 
                         {/* Tabs */}
                         <div className="card" style={{ padding: 0 }}>
-                            <div style={{ display: 'flex', borderBottom: '1px solid rgba(99,102,241,0.15)', padding: '0 16px' }}>
+                            <div style={{ display: 'flex', borderBottom: '1px solid #e5e7eb', padding: '0 16px' }}>
                                 {[
                                     { id: 'clauses', label: `Clauses (${analysisResult.clauses?.length || 0})` },
                                     { id: 'xai', label: 'XAI Explanation' },
@@ -288,7 +285,7 @@ export default function DocumentAnalyzer() {
                                             cursor: 'pointer',
                                             fontSize: '13px',
                                             fontWeight: 600,
-                                            color: activeTab === tab.id ? '#818cf8' : '#64748b',
+                                            color: activeTab === tab.id ? '#6366f1' : '#64748b',
                                             borderBottom: activeTab === tab.id ? '2px solid #6366f1' : '2px solid transparent',
                                             fontFamily: 'Inter',
                                             transition: 'all 0.2s',
@@ -311,13 +308,13 @@ export default function DocumentAnalyzer() {
                                 {activeTab === 'xai' && (
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                         <div style={{
-                                            background: 'rgba(99,102,241,0.08)',
-                                            border: '1px solid rgba(99,102,241,0.2)',
+                                            background: '#f5f3ff',
+                                            border: '1px solid #e0d9ff',
                                             borderRadius: '10px',
                                             padding: '16px',
                                         }}>
-                                            <h4 style={{ color: '#818cf8', fontFamily: 'Outfit', fontSize: '15px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                <Brain size={15} color="#818cf8" />
+                                            <h4 style={{ color: '#6366f1', fontFamily: 'Outfit', fontSize: '15px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                <Brain size={15} color="#6366f1" />
                                                 Why Risk Score = {analysisResult.riskScore}/100?
                                             </h4>
                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -327,39 +324,40 @@ export default function DocumentAnalyzer() {
                                                         alignItems: 'flex-start',
                                                         gap: '10px',
                                                         padding: '10px 12px',
-                                                        background: 'rgba(0,0,0,0.2)',
+                                                        background: '#ffffff',
+                                                        border: '1px solid #e5e7eb',
                                                         borderRadius: '8px',
-                                                        borderLeft: `3px solid ${clause.risk === 'high' ? '#ef4444' : '#f59e0b'}`,
+                                                        borderLeft: `3px solid ${clause.risk === 'high' ? '#dc2626' : '#d97706'}`,
                                                     }}>
                                                         <div style={{
                                                             width: '28px', height: '28px', borderRadius: '6px', flexShrink: 0,
-                                                            background: clause.risk === 'high' ? 'rgba(239,68,68,0.12)' : 'rgba(245,158,11,0.12)',
+                                                            background: clause.risk === 'high' ? 'rgba(220,38,38,0.08)' : 'rgba(217,119,6,0.08)',
                                                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                                                         }}>
                                                             {clause.risk === 'high'
-                                                                ? <ShieldAlert size={14} color="#ef4444" />
-                                                                : <AlertTriangle size={14} color="#f59e0b" />
+                                                                ? <ShieldAlert size={14} color="#dc2626" />
+                                                                : <AlertTriangle size={14} color="#d97706" />
                                                             }
                                                         </div>
                                                         <div>
-                                                            <div style={{ fontSize: '13px', fontWeight: 600, color: '#f1f5f9' }}>{clause.label}</div>
-                                                            <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '4px' }}>{clause.explanation}</div>
+                                                            <div style={{ fontSize: '13px', fontWeight: 600, color: '#1a1a2e' }}>{clause.label}</div>
+                                                            <div style={{ fontSize: '12px', color: '#64748b', marginTop: '4px' }}>{clause.explanation}</div>
                                                         </div>
                                                     </div>
                                                 ))}
                                             </div>
                                         </div>
                                         <div style={{
-                                            background: 'rgba(16,185,129,0.08)',
-                                            border: '1px solid rgba(16,185,129,0.2)',
+                                            background: '#ecfdf5',
+                                            border: '1px solid #d1fae5',
                                             borderRadius: '10px',
                                             padding: '16px',
                                         }}>
-                                            <h4 style={{ color: '#10b981', fontSize: '14px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                                <Lightbulb size={14} color="#10b981" />
+                                            <h4 style={{ color: '#059669', fontSize: '14px', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                <Lightbulb size={14} color="#059669" />
                                                 AI Recommendation
                                             </h4>
-                                            <p style={{ fontSize: '13px', color: '#94a3b8', lineHeight: 1.7 }}>
+                                            <p style={{ fontSize: '13px', color: '#475569', lineHeight: 1.7 }}>
                                                 {analysisResult.riskScore > 60
                                                     ? 'This loan agreement has HIGH risk. We strongly recommend negotiating the foreclosure charges and review the cross-default clause carefully. Consider comparing with other lenders.'
                                                     : analysisResult.riskScore > 30
@@ -374,12 +372,13 @@ export default function DocumentAnalyzer() {
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                         {analysisResult.clauses?.map((clause) => (
                                             <div key={clause.id} style={{
-                                                background: 'rgba(0,0,0,0.2)',
+                                                background: '#f8fafc',
+                                                border: '1px solid #e5e7eb',
                                                 borderRadius: '8px',
                                                 padding: '12px',
                                                 fontFamily: 'monospace',
                                                 fontSize: '12px',
-                                                color: '#94a3b8',
+                                                color: '#475569',
                                                 lineHeight: 1.6,
                                             }}>
                                                 <span style={{ color: '#6366f1' }}>// [{clause.type}] {clause.label}</span>

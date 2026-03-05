@@ -14,6 +14,8 @@ const BANK_COLORS = {
     Canara: '#1d4ed8', IDFC: '#0f766e'
 };
 
+const lightTooltip = { background: '#ffffff', border: '1px solid #e5e7eb', borderRadius: '8px', color: '#1a1a2e' };
+
 export default function LoanComparison() {
     const { selectedState, selectedLoanType, setSelectedState, setSelectedLoanType } = useStore();
     const [sortBy, setSortBy] = useState('interestRate');
@@ -73,8 +75,8 @@ export default function LoanComparison() {
         <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
             {/* Header */}
             <div style={{
-                background: 'linear-gradient(135deg, rgba(99,102,241,0.12), rgba(245,158,11,0.08))',
-                border: '1px solid rgba(99,102,241,0.2)',
+                background: 'linear-gradient(135deg, #f5f3ff, #fffbeb)',
+                border: '1px solid #e0e7ff',
                 borderRadius: '12px',
                 padding: '20px 24px',
                 display: 'flex',
@@ -84,10 +86,10 @@ export default function LoanComparison() {
                 gap: '16px',
             }}>
                 <div>
-                    <h2 style={{ fontFamily: 'Outfit', fontSize: '20px', fontWeight: 700, color: '#f1f5f9', margin: 0 }}>
+                    <h2 style={{ fontFamily: 'Outfit', fontSize: '20px', fontWeight: 700, color: '#1a1a2e', margin: 0 }}>
                         Bank Loan Comparison Dashboard
                     </h2>
-                    <p style={{ fontSize: '13px', color: '#94a3b8', marginTop: '4px' }}>
+                    <p style={{ fontSize: '13px', color: '#64748b', marginTop: '4px' }}>
                         State-wise bank comparison • Risk scoring • XAI-powered analysis
                     </p>
                 </div>
@@ -128,20 +130,16 @@ export default function LoanComparison() {
 
             {/* Loan Amount Control */}
             <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                <span style={{ fontSize: '13px', color: '#94a3b8', whiteSpace: 'nowrap' }}>Loan Amount:</span>
+                <span style={{ fontSize: '13px', color: '#475569', whiteSpace: 'nowrap' }}>Loan Amount:</span>
                 <input
-                    type="range"
-                    min={100000}
-                    max={50000000}
-                    step={100000}
-                    value={loanAmount}
+                    type="range" min={100000} max={50000000} step={100000} value={loanAmount}
                     onChange={e => setLoanAmount(Number(e.target.value))}
                     style={{ flex: 1, accentColor: '#6366f1' }}
                 />
                 <span style={{ fontSize: '15px', fontWeight: 700, color: '#6366f1', whiteSpace: 'nowrap' }}>
                     {formatCurrency(loanAmount)}
                 </span>
-                <div style={{ fontSize: '12px', color: '#64748b', whiteSpace: 'nowrap' }}>
+                <div style={{ fontSize: '12px', color: '#94a3b8', whiteSpace: 'nowrap' }}>
                     {selectedForCompare.length > 0 ? `${selectedForCompare.length}/4 selected` : 'Select up to 4 to compare'}
                 </div>
                 {selectedForCompare.length > 0 && (
@@ -157,7 +155,7 @@ export default function LoanComparison() {
                     <div style={{ fontSize: '48px', marginBottom: '16px', opacity: 0.3 }}>
                         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
                     </div>
-                    <div style={{ fontSize: '16px', fontWeight: 600, color: '#f1f5f9' }}>No offers found</div>
+                    <div style={{ fontSize: '16px', fontWeight: 600, color: '#1a1a2e' }}>No offers found</div>
                     <div style={{ fontSize: '13px', color: '#64748b', marginTop: '8px' }}>
                         No banks offer {selectedLoanType} in {selectedState} yet.
                     </div>
@@ -175,43 +173,33 @@ export default function LoanComparison() {
                                     border: isSelected
                                         ? '2px solid #6366f1'
                                         : isBest
-                                            ? '1px solid rgba(34,197,94,0.4)'
-                                            : '1px solid rgba(99,102,241,0.15)',
+                                            ? '1px solid rgba(22,163,74,0.4)'
+                                            : '1px solid #e5e7eb',
                                     cursor: 'pointer',
                                     position: 'relative',
                                     animationDelay: `${idx * 0.05}s`,
                                     transition: 'all 0.3s',
                                     transform: isSelected ? 'translateY(-2px)' : 'none',
-                                    boxShadow: isSelected ? '0 8px 32px rgba(99,102,241,0.3)' : 'none',
+                                    boxShadow: isSelected ? '0 8px 32px rgba(99,102,241,0.15)' : 'none',
                                 }}
                                 onClick={() => toggleCompare(loan.id)}
                             >
                                 {isBest && (
                                     <div style={{
-                                        position: 'absolute',
-                                        top: '-10px',
-                                        right: '16px',
-                                        background: 'linear-gradient(135deg, #22c55e, #16a34a)',
-                                        color: 'white',
-                                        fontSize: '10px',
-                                        fontWeight: 800,
-                                        padding: '3px 10px',
-                                        borderRadius: '12px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '4px',
+                                        position: 'absolute', top: '-10px', right: '16px',
+                                        background: 'linear-gradient(135deg, #16a34a, #15803d)',
+                                        color: 'white', fontSize: '10px', fontWeight: 800,
+                                        padding: '3px 10px', borderRadius: '12px',
+                                        display: 'flex', alignItems: 'center', gap: '4px',
                                     }}>
                                         <Star size={9} fill="white" /> BEST OFFER
                                     </div>
                                 )}
                                 {isSelected && (
                                     <div style={{
-                                        position: 'absolute',
-                                        top: '12px',
-                                        right: '12px',
+                                        position: 'absolute', top: '12px', right: '12px',
                                         width: '20px', height: '20px',
-                                        background: '#6366f1',
-                                        borderRadius: '50%',
+                                        background: '#6366f1', borderRadius: '50%',
                                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                                         fontSize: '12px', color: 'white', fontWeight: 700,
                                     }}>
@@ -224,16 +212,16 @@ export default function LoanComparison() {
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                         <div style={{
                                             width: '38px', height: '38px', borderRadius: '10px',
-                                            background: `${BANK_COLORS[loan.bank] || '#6366f1'}22`,
-                                            border: `1px solid ${BANK_COLORS[loan.bank] || '#6366f1'}44`,
+                                            background: `${BANK_COLORS[loan.bank] || '#6366f1'}15`,
+                                            border: `1px solid ${BANK_COLORS[loan.bank] || '#6366f1'}30`,
                                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                                             fontSize: '10px', fontWeight: 800, color: BANK_COLORS[loan.bank] || '#6366f1',
                                         }}>
                                             {loan.logo}
                                         </div>
                                         <div>
-                                            <div style={{ fontSize: '14px', fontWeight: 700, color: '#f1f5f9' }}>{loan.bankFull}</div>
-                                            <div style={{ fontSize: '11px', color: '#64748b' }}>{loan.loanType}</div>
+                                            <div style={{ fontSize: '14px', fontWeight: 700, color: '#1a1a2e' }}>{loan.bankFull}</div>
+                                            <div style={{ fontSize: '11px', color: '#94a3b8' }}>{loan.loanType}</div>
                                         </div>
                                     </div>
                                     <RiskBadge level={loan.riskData.level} score={loan.riskData.score} />
@@ -244,13 +232,13 @@ export default function LoanComparison() {
                                     {[
                                         { label: 'Interest Rate', value: `${loan.interestRate}%`, sub: loan.rateType, color: '#6366f1' },
                                         { label: 'Monthly EMI', value: formatCurrency(loan.emi), sub: `for ${formatCurrency(loanAmount)}`, color: '#10b981' },
-                                        { label: 'Processing Fee', value: `${loan.processingFee}%`, sub: loan.processingFee > 1 ? '⚠️ High' : '✅ Low', color: loan.processingFee > 1 ? '#ef4444' : '#22c55e' },
-                                        { label: 'Prepay Penalty', value: loan.prepaymentPenalty === 0 ? 'NIL' : `${loan.prepaymentPenalty}%`, sub: loan.prepaymentPenalty > 2 ? '⚠️ High' : '✅ OK', color: loan.prepaymentPenalty > 2 ? '#ef4444' : '#22c55e' },
+                                        { label: 'Processing Fee', value: `${loan.processingFee}%`, sub: loan.processingFee > 1 ? '⚠️ High' : '✅ Low', color: loan.processingFee > 1 ? '#dc2626' : '#16a34a' },
+                                        { label: 'Prepay Penalty', value: loan.prepaymentPenalty === 0 ? 'NIL' : `${loan.prepaymentPenalty}%`, sub: loan.prepaymentPenalty > 2 ? '⚠️ High' : '✅ OK', color: loan.prepaymentPenalty > 2 ? '#dc2626' : '#16a34a' },
                                     ].map(m => (
-                                        <div key={m.label} style={{ background: 'rgba(0,0,0,0.2)', borderRadius: '8px', padding: '10px' }}>
-                                            <div style={{ fontSize: '11px', color: '#64748b', marginBottom: '3px' }}>{m.label}</div>
+                                        <div key={m.label} style={{ background: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '8px', padding: '10px' }}>
+                                            <div style={{ fontSize: '11px', color: '#94a3b8', marginBottom: '3px' }}>{m.label}</div>
                                             <div style={{ fontSize: '15px', fontWeight: 800, color: m.color }}>{m.value}</div>
-                                            <div style={{ fontSize: '10px', color: '#64748b', marginTop: '2px' }}>{m.sub}</div>
+                                            <div style={{ fontSize: '10px', color: '#94a3b8', marginTop: '2px' }}>{m.sub}</div>
                                         </div>
                                     ))}
                                 </div>
@@ -258,7 +246,7 @@ export default function LoanComparison() {
                                 {/* Risk Score Bar */}
                                 <div>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
-                                        <span style={{ fontSize: '12px', color: '#94a3b8' }}>Risk Score</span>
+                                        <span style={{ fontSize: '12px', color: '#64748b' }}>Risk Score</span>
                                         <span style={{ fontSize: '12px', fontWeight: 700, color: loan.riskData.color }}>{loan.riskData.score}/100</span>
                                     </div>
                                     <div className="progress-bar">
@@ -274,15 +262,12 @@ export default function LoanComparison() {
 
                                 {/* Total Repayment */}
                                 <div style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                    marginTop: '12px',
-                                    paddingTop: '12px',
-                                    borderTop: '1px solid rgba(255,255,255,0.05)',
+                                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                                    marginTop: '12px', paddingTop: '12px',
+                                    borderTop: '1px solid #f1f5f9',
                                 }}>
                                     <span style={{ fontSize: '12px', color: '#64748b' }}>Total Repayment ({loan.tenure}yr)</span>
-                                    <span style={{ fontSize: '14px', fontWeight: 700, color: '#f59e0b' }}>{formatCurrency(loan.totalRepayment)}</span>
+                                    <span style={{ fontSize: '14px', fontWeight: 700, color: '#d97706' }}>{formatCurrency(loan.totalRepayment)}</span>
                                 </div>
 
                                 {/* XAI Risk Factors */}
@@ -291,9 +276,9 @@ export default function LoanComparison() {
                                         {loan.riskData.factors.slice(0, 2).map((f, i) => (
                                             <span key={i} style={{
                                                 fontSize: '10px', padding: '2px 6px', borderRadius: '4px',
-                                                background: f.severity === 'high' ? 'rgba(239,68,68,0.15)' : 'rgba(245,158,11,0.15)',
-                                                color: f.severity === 'high' ? '#ef4444' : '#f59e0b',
-                                                border: `1px solid ${f.severity === 'high' ? 'rgba(239,68,68,0.3)' : 'rgba(245,158,11,0.3)'}`,
+                                                background: f.severity === 'high' ? 'rgba(220,38,38,0.08)' : 'rgba(217,119,6,0.08)',
+                                                color: f.severity === 'high' ? '#dc2626' : '#d97706',
+                                                border: `1px solid ${f.severity === 'high' ? 'rgba(220,38,38,0.2)' : 'rgba(217,119,6,0.2)'}`,
                                             }}>
                                                 {f.label.slice(0, 30)}{f.label.length > 30 ? '...' : ''}
                                             </span>
@@ -312,21 +297,18 @@ export default function LoanComparison() {
                     {/* EMI & Interest Comparison */}
                     <div className="card">
                         <div style={{ marginBottom: '16px' }}>
-                            <h3 style={{ fontFamily: 'Outfit', fontSize: '15px', color: '#f1f5f9' }}>
+                            <h3 style={{ fontFamily: 'Outfit', fontSize: '15px', color: '#1a1a2e' }}>
                                 {compareLoans.length >= 2 ? 'Selected Banks' : 'Top Banks'} – EMI vs Interest
                             </h3>
                             <p style={{ fontSize: '12px', color: '#64748b' }}>For {formatCurrency(loanAmount)} loan</p>
                         </div>
                         <ResponsiveContainer width="100%" height={250}>
                             <BarChart data={emiCompareData} barSize={24}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                                <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" vertical={false} />
                                 <XAxis dataKey="bank" tick={{ fill: '#64748b', fontSize: 12 }} axisLine={false} tickLine={false} />
-                                <YAxis tick={{ fill: '#64748b', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={v => `₹${(v / 1000).toFixed(0)}K`} />
-                                <Tooltip
-                                    contentStyle={{ background: '#1a2236', border: '1px solid rgba(99,102,241,0.3)', borderRadius: '8px', color: '#f1f5f9' }}
-                                    formatter={v => [`₹${v.toLocaleString()}`, '']}
-                                />
-                                <Legend wrapperStyle={{ color: '#94a3b8', fontSize: 12 }} />
+                                <YAxis tick={{ fill: '#94a3b8', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={v => `₹${(v / 1000).toFixed(0)}K`} />
+                                <Tooltip contentStyle={lightTooltip} formatter={v => [`₹${v.toLocaleString()}`, '']} />
+                                <Legend wrapperStyle={{ color: '#64748b', fontSize: 12 }} />
                                 <Bar dataKey="EMI" fill="#6366f1" radius={[4, 4, 0, 0]} />
                                 <Bar dataKey="Interest" fill="#f59e0b" radius={[4, 4, 0, 0]} />
                             </BarChart>
@@ -337,14 +319,14 @@ export default function LoanComparison() {
                     {compareLoans.length >= 2 ? (
                         <div className="card">
                             <div style={{ marginBottom: '16px' }}>
-                                <h3 style={{ fontFamily: 'Outfit', fontSize: '15px', color: '#f1f5f9' }}>Multi-Dimension Comparison</h3>
+                                <h3 style={{ fontFamily: 'Outfit', fontSize: '15px', color: '#1a1a2e' }}>Multi-Dimension Comparison</h3>
                                 <p style={{ fontSize: '12px', color: '#64748b' }}>Higher is better in each dimension</p>
                             </div>
                             <ResponsiveContainer width="100%" height={250}>
                                 <RadarChart data={radarData}>
-                                    <PolarGrid stroke="rgba(255,255,255,0.1)" />
-                                    <PolarAngleAxis dataKey="subject" tick={{ fill: '#94a3b8', fontSize: 12 }} />
-                                    <PolarRadiusAxis tick={{ fill: '#64748b', fontSize: 10 }} domain={[0, 100]} />
+                                    <PolarGrid stroke="rgba(0,0,0,0.08)" />
+                                    <PolarAngleAxis dataKey="subject" tick={{ fill: '#475569', fontSize: 12 }} />
+                                    <PolarRadiusAxis tick={{ fill: '#94a3b8', fontSize: 10 }} domain={[0, 100]} />
                                     {compareLoans.map((loan, i) => (
                                         <Radar
                                             key={loan.bank}
@@ -352,21 +334,21 @@ export default function LoanComparison() {
                                             dataKey={loan.bank}
                                             stroke={Object.values(BANK_COLORS)[i % Object.keys(BANK_COLORS).length]}
                                             fill={Object.values(BANK_COLORS)[i % Object.keys(BANK_COLORS).length]}
-                                            fillOpacity={0.15}
+                                            fillOpacity={0.12}
                                             strokeWidth={2}
                                         />
                                     ))}
-                                    <Legend wrapperStyle={{ color: '#94a3b8', fontSize: 12 }} />
-                                    <Tooltip contentStyle={{ background: '#1a2236', border: '1px solid rgba(99,102,241,0.3)', borderRadius: '8px', color: '#f1f5f9' }} />
+                                    <Legend wrapperStyle={{ color: '#64748b', fontSize: 12 }} />
+                                    <Tooltip contentStyle={lightTooltip} />
                                 </RadarChart>
                             </ResponsiveContainer>
                         </div>
                     ) : (
                         <div className="card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '12px' }}>
-                            <div style={{ fontSize: '40px', marginBottom: '12px', opacity: 0.3 }}>
+                            <div style={{ fontSize: '40px', marginBottom: '12px', opacity: 0.25 }}>
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
                             </div>
-                            <div style={{ fontSize: '15px', fontWeight: 600, color: '#f1f5f9', fontFamily: 'Outfit' }}>Select 2–4 banks</div>
+                            <div style={{ fontSize: '15px', fontWeight: 600, color: '#1a1a2e', fontFamily: 'Outfit' }}>Select 2–4 banks</div>
                             <div style={{ fontSize: '13px', color: '#64748b', textAlign: 'center' }}>Click on bank cards above to compare them in a multi-dimension radar chart</div>
                         </div>
                     )}
@@ -376,15 +358,15 @@ export default function LoanComparison() {
             {/* Comparison Table */}
             {compareLoans.length >= 2 && (
                 <div className="card" style={{ overflowX: 'auto' }}>
-                    <h3 style={{ fontFamily: 'Outfit', fontSize: '15px', color: '#f1f5f9', marginBottom: '16px' }}>
+                    <h3 style={{ fontFamily: 'Outfit', fontSize: '15px', color: '#1a1a2e', marginBottom: '16px' }}>
                         Detailed Comparison Table
                     </h3>
                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
                         <thead>
                             <tr>
-                                <th style={{ textAlign: 'left', padding: '10px 12px', color: '#64748b', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.05)' }}>Parameter</th>
+                                <th style={{ textAlign: 'left', padding: '10px 12px', color: '#475569', fontWeight: 600, borderBottom: '1px solid #e5e7eb' }}>Parameter</th>
                                 {compareLoans.map(l => (
-                                    <th key={l.id} style={{ textAlign: 'center', padding: '10px 12px', color: '#94a3b8', fontWeight: 600, borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                    <th key={l.id} style={{ textAlign: 'center', padding: '10px 12px', color: '#64748b', fontWeight: 600, borderBottom: '1px solid #e5e7eb' }}>
                                         {l.bank}
                                     </th>
                                 ))}
@@ -403,16 +385,16 @@ export default function LoanComparison() {
                                 const values = compareLoans.map(l => l[row.key]);
                                 const bestVal = row.bestFn ? row.bestFn(values.filter(v => typeof v === 'number')) : null;
                                 return (
-                                    <tr key={row.key} style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
-                                        <td style={{ padding: '10px 12px', color: '#94a3b8' }}>{row.label}</td>
+                                    <tr key={row.key} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                                        <td style={{ padding: '10px 12px', color: '#64748b' }}>{row.label}</td>
                                         {compareLoans.map(l => {
                                             const isBest = bestVal !== null && l[row.key] === bestVal;
                                             return (
                                                 <td key={l.id} style={{
                                                     textAlign: 'center', padding: '10px 12px',
-                                                    color: isBest ? '#22c55e' : '#f1f5f9',
+                                                    color: isBest ? '#16a34a' : '#1a1a2e',
                                                     fontWeight: isBest ? 700 : 400,
-                                                    background: isBest ? 'rgba(34,197,94,0.05)' : 'transparent',
+                                                    background: isBest ? 'rgba(22,163,74,0.05)' : 'transparent',
                                                 }}>
                                                     {row.format(l[row.key])}
                                                     {isBest && <span style={{ marginLeft: '4px', fontSize: '10px' }}>✓</span>}

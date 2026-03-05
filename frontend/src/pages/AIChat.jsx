@@ -63,7 +63,6 @@ function generateResponse(userMessage) {
         return `👋 Hello! I'm **CrediClear AI**, your intelligent loan advisor.\n\nI can help you with:\n\n🔢 **Calculations:**\n- EMI calculation ("Calculate EMI for 50L at 8.5% for 20 years")\n- Foreclosure impact\n\n🏦 **Comparisons:**\n- "Compare SBI and HDFC home loans"\n- "Best banks for education loan"\n\n📋 **Clause Explanation:**\n- "What is a cross-default clause?"\n- "Explain SARFAESI Act"\n\n⚠️ **Risk Analysis:**\n- "How is risk score calculated?"\n- "What are hidden loan clauses?"\n\nWhat would you like to know?`;
     }
 
-    // Default intelligent response
     const responses = [
         `📊 That's a great question about loan transparency! Based on India's lending regulations and my analysis of ${BANK_DATA.length} bank offers across 10 loan types, here's what I know:\n\nThe key to making smart loan decisions is understanding all costs involved - not just the headline interest rate, but processing fees, penalties, and hidden clauses.\n\nCould you be more specific? I can help with EMI calculations, bank comparisons, or clause explanations.`,
         `🤖 I analyzed your query using my AI model trained on Indian banking regulations and ${BANK_DATA.length} loan products.\n\nFor the most accurate information, I'd recommend:\n1. Using the **Document Analyzer** to check your specific loan agreement\n2. Using the **Comparison Dashboard** to compare banks\n3. Using the **EMI Simulator** for financial planning\n\nWhat specific aspect would you like to explore?`,
@@ -80,22 +79,20 @@ function MessageBubble({ message, isUser }) {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    // Simple markdown renderer
     const renderContent = (text) => {
         const lines = text.split('\n');
         return lines.map((line, i) => {
-            if (line.startsWith('# ')) return <h3 key={i} style={{ color: '#f1f5f9', marginBottom: '6px' }}>{line.slice(2)}</h3>;
-            if (line.startsWith('## ')) return <h4 key={i} style={{ color: '#818cf8', marginBottom: '4px' }}>{line.slice(3)}</h4>;
-            if (line.startsWith('- ')) return <div key={i} style={{ paddingLeft: '16px', color: '#94a3b8', lineHeight: 1.6 }}>• {renderInline(line.slice(2))}</div>;
+            if (line.startsWith('# ')) return <h3 key={i} style={{ color: '#1a1a2e', marginBottom: '6px' }}>{line.slice(2)}</h3>;
+            if (line.startsWith('## ')) return <h4 key={i} style={{ color: '#6366f1', marginBottom: '4px' }}>{line.slice(3)}</h4>;
+            if (line.startsWith('- ')) return <div key={i} style={{ paddingLeft: '16px', color: '#475569', lineHeight: 1.6 }}>• {renderInline(line.slice(2))}</div>;
             if (line.startsWith('|')) {
-                // table row
                 const cells = line.split('|').filter(c => c.trim());
                 return (
-                    <div key={i} style={{ display: 'flex', gap: '0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                    <div key={i} style={{ display: 'flex', gap: '0', borderBottom: '1px solid #f1f5f9' }}>
                         {cells.map((cell, j) => (
                             <div key={j} style={{
                                 flex: 1, padding: '6px 10px', fontSize: '12px',
-                                color: i === 0 ? '#818cf8' : '#94a3b8',
+                                color: i === 0 ? '#6366f1' : '#475569',
                                 fontWeight: i === 0 ? 700 : 400,
                             }}>
                                 {cell.includes('---') ? null : renderInline(cell.trim())}
@@ -104,9 +101,9 @@ function MessageBubble({ message, isUser }) {
                     </div>
                 );
             }
-            if (line.match(/^\d+\./)) return <div key={i} style={{ paddingLeft: '8px', color: '#94a3b8', lineHeight: 1.7 }}>{renderInline(line)}</div>;
+            if (line.match(/^\d+\./)) return <div key={i} style={{ paddingLeft: '8px', color: '#475569', lineHeight: 1.7 }}>{renderInline(line)}</div>;
             if (line === '') return <br key={i} />;
-            return <div key={i} style={{ color: '#94a3b8', lineHeight: 1.7 }}>{renderInline(line)}</div>;
+            return <div key={i} style={{ color: '#475569', lineHeight: 1.7 }}>{renderInline(line)}</div>;
         });
     };
 
@@ -114,10 +111,10 @@ function MessageBubble({ message, isUser }) {
         const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/);
         return parts.map((part, i) => {
             if (part.startsWith('**') && part.endsWith('**')) {
-                return <strong key={i} style={{ color: '#f1f5f9' }}>{part.slice(2, -2)}</strong>;
+                return <strong key={i} style={{ color: '#1a1a2e' }}>{part.slice(2, -2)}</strong>;
             }
             if (part.startsWith('`') && part.endsWith('`')) {
-                return <code key={i} style={{ background: 'rgba(99,102,241,0.2)', padding: '1px 5px', borderRadius: '3px', fontSize: '12px', color: '#818cf8' }}>{part.slice(1, -1)}</code>;
+                return <code key={i} style={{ background: 'rgba(99,102,241,0.08)', padding: '1px 5px', borderRadius: '3px', fontSize: '12px', color: '#6366f1' }}>{part.slice(1, -1)}</code>;
             }
             return part;
         });
@@ -139,7 +136,7 @@ function MessageBubble({ message, isUser }) {
                     : 'linear-gradient(135deg, #10b981, #059669)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: '16px',
-                boxShadow: isUser ? '0 4px 12px rgba(99,102,241,0.3)' : '0 4px 12px rgba(16,185,129,0.3)',
+                boxShadow: isUser ? '0 4px 12px rgba(99,102,241,0.25)' : '0 4px 12px rgba(16,185,129,0.25)',
             }}>
                 {isUser ? <User size={16} color="white" /> : <Bot size={16} color="white" />}
             </div>
@@ -148,13 +145,14 @@ function MessageBubble({ message, isUser }) {
             <div style={{ maxWidth: '75%', display: 'flex', flexDirection: 'column', gap: '4px', alignItems: isUser ? 'flex-end' : 'flex-start' }}>
                 <div style={{
                     background: isUser
-                        ? 'linear-gradient(135deg, rgba(99,102,241,0.8), rgba(79,70,229,0.8))'
-                        : 'rgba(31,45,68,0.9)',
-                    border: isUser ? 'none' : '1px solid rgba(99,102,241,0.15)',
+                        ? 'linear-gradient(135deg, #6366f1, #4f46e5)'
+                        : '#ffffff',
+                    border: isUser ? 'none' : '1px solid #e5e7eb',
                     borderRadius: isUser ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
                     padding: '12px 16px',
                     fontSize: '13px',
                     lineHeight: 1.6,
+                    boxShadow: isUser ? 'none' : '0 1px 4px rgba(0,0,0,0.06)',
                 }}>
                     {isUser
                         ? <span style={{ color: 'white' }}>{message.content}</span>
@@ -162,13 +160,13 @@ function MessageBubble({ message, isUser }) {
                     }
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontSize: '10px', color: '#64748b' }}>
+                    <span style={{ fontSize: '10px', color: '#94a3b8' }}>
                         {new Date(message.timestamp).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
                     </span>
                     {!isUser && (
                         <button
                             onClick={handleCopy}
-                            style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b', display: 'flex', alignItems: 'center', gap: '3px', fontSize: '11px' }}
+                            style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '3px', fontSize: '11px' }}
                         >
                             <Copy size={10} /> {copied ? 'Copied!' : 'Copy'}
                         </button>
@@ -208,7 +206,6 @@ export default function AIChat() {
         addChatMessage({ role: 'user', content: text });
         setChatLoading(true);
 
-        // Simulate API call delay
         await new Promise(r => setTimeout(r, 1000 + Math.random() * 1000));
 
         const response = generateResponse(text);
@@ -220,8 +217,8 @@ export default function AIChat() {
         <div style={{ padding: '24px', height: 'calc(100vh - 64px)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {/* Header */}
             <div style={{
-                background: 'linear-gradient(135deg, rgba(16,185,129,0.12), rgba(99,102,241,0.08))',
-                border: '1px solid rgba(16,185,129,0.2)',
+                background: 'linear-gradient(135deg, #ecfdf5, #f5f3ff)',
+                border: '1px solid #d1fae5',
                 borderRadius: '12px',
                 padding: '16px 20px',
                 display: 'flex',
@@ -234,12 +231,12 @@ export default function AIChat() {
                         width: '40px', height: '40px', borderRadius: '50%',
                         background: 'linear-gradient(135deg, #10b981, #6366f1)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        boxShadow: '0 0 20px rgba(16,185,129,0.3)',
+                        boxShadow: '0 0 16px rgba(16,185,129,0.2)',
                     }}>
                         <Bot size={20} color="white" />
                     </div>
                     <div>
-                        <div style={{ fontSize: '15px', fontWeight: 700, color: '#f1f5f9' }}>CrediClear AI Assistant</div>
+                        <div style={{ fontSize: '15px', fontWeight: 700, color: '#1a1a2e' }}>CrediClear AI Assistant</div>
                         <div style={{ fontSize: '12px', color: '#10b981', display: 'flex', alignItems: 'center', gap: '6px' }}>
                             <div style={{ width: '6px', height: '6px', background: '#10b981', borderRadius: '50%', boxShadow: '0 0 6px #10b981' }} />
                             Online • RAG-powered • India-specific knowledge base
@@ -247,10 +244,10 @@ export default function AIChat() {
                     </div>
                 </div>
                 <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
-                    <div style={{ fontSize: '11px', padding: '3px 10px', background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.2)', borderRadius: '12px', color: '#818cf8', fontWeight: 600 }}>
+                    <div style={{ fontSize: '11px', padding: '3px 10px', background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.18)', borderRadius: '12px', color: '#6366f1', fontWeight: 600 }}>
                         GPT-4 Turbo
                     </div>
-                    <div style={{ fontSize: '11px', padding: '3px 10px', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: '12px', color: '#10b981', fontWeight: 600 }}>
+                    <div style={{ fontSize: '11px', padding: '3px 10px', background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.18)', borderRadius: '12px', color: '#059669', fontWeight: 600 }}>
                         RAG Active
                     </div>
                 </div>
@@ -280,13 +277,14 @@ export default function AIChat() {
                             <Bot size={16} color="white" />
                         </div>
                         <div style={{
-                            background: 'rgba(31,45,68,0.9)',
-                            border: '1px solid rgba(99,102,241,0.15)',
+                            background: '#ffffff',
+                            border: '1px solid #e5e7eb',
                             borderRadius: '18px 18px 18px 4px',
                             padding: '14px 18px',
                             display: 'flex',
                             gap: '4px',
                             alignItems: 'center',
+                            boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
                         }}>
                             {[0, 1, 2].map(i => (
                                 <div key={i} style={{
@@ -312,16 +310,16 @@ export default function AIChat() {
                             fontSize: '11px',
                             padding: '5px 12px',
                             borderRadius: '16px',
-                            background: 'rgba(99,102,241,0.08)',
-                            border: '1px solid rgba(99,102,241,0.2)',
-                            color: '#818cf8',
+                            background: 'rgba(99,102,241,0.06)',
+                            border: '1px solid rgba(99,102,241,0.18)',
+                            color: '#6366f1',
                             cursor: 'pointer',
                             fontFamily: 'Inter',
                             whiteSpace: 'nowrap',
                             transition: 'all 0.2s',
                         }}
-                        onMouseOver={e => { e.target.style.background = 'rgba(99,102,241,0.15)'; e.target.style.borderColor = '#6366f1'; }}
-                        onMouseOut={e => { e.target.style.background = 'rgba(99,102,241,0.08)'; e.target.style.borderColor = 'rgba(99,102,241,0.2)'; }}
+                        onMouseOver={e => { e.target.style.background = 'rgba(99,102,241,0.12)'; e.target.style.borderColor = '#6366f1'; }}
+                        onMouseOut={e => { e.target.style.background = 'rgba(99,102,241,0.06)'; e.target.style.borderColor = 'rgba(99,102,241,0.18)'; }}
                     >
                         {prompt}
                     </button>
@@ -332,12 +330,13 @@ export default function AIChat() {
             <div style={{
                 display: 'flex',
                 gap: '10px',
-                background: 'rgba(31,45,68,0.8)',
-                border: '1px solid rgba(99,102,241,0.2)',
+                background: '#ffffff',
+                border: '1px solid #e5e7eb',
                 borderRadius: '12px',
                 padding: '10px 14px',
                 flexShrink: 0,
                 alignItems: 'flex-end',
+                boxShadow: '0 1px 8px rgba(0,0,0,0.06)',
             }}>
                 <Sparkles size={16} color="#6366f1" style={{ flexShrink: 0, marginBottom: '4px' }} />
                 <textarea
@@ -356,7 +355,7 @@ export default function AIChat() {
                         background: 'none',
                         border: 'none',
                         outline: 'none',
-                        color: '#f1f5f9',
+                        color: '#1a1a2e',
                         fontFamily: 'Inter',
                         fontSize: '13px',
                         resize: 'none',
@@ -372,7 +371,7 @@ export default function AIChat() {
                     style={{
                         width: '36px', height: '36px',
                         borderRadius: '8px',
-                        background: input.trim() ? 'linear-gradient(135deg, #6366f1, #4f46e5)' : 'rgba(99,102,241,0.2)',
+                        background: input.trim() ? 'linear-gradient(135deg, #6366f1, #4f46e5)' : '#f1f5f9',
                         border: 'none',
                         cursor: input.trim() ? 'pointer' : 'not-allowed',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -380,7 +379,7 @@ export default function AIChat() {
                         flexShrink: 0,
                     }}
                 >
-                    <Send size={16} color={input.trim() ? 'white' : '#64748b'} />
+                    <Send size={16} color={input.trim() ? 'white' : '#94a3b8'} />
                 </button>
             </div>
         </div>
