@@ -348,6 +348,263 @@ def chat(request: ChatRequest):
         "timestamp": "2024-01-01T12:00:00Z",
     }
 
+
+class DocumentChatRequest(BaseModel):
+    messages: List[ChatMessage]
+    document_context: str  # JSON-serialized clause data
+    loan_type: Optional[str] = None
+    bank: Optional[str] = None
+
+
+def generate_document_response(user_message: str, doc_context: str, loan_type: str = "", bank: str = "") -> str:
+    """Generate a context-aware response based on document clauses."""
+    msg = user_message.lower()
+    
+    try:
+        context_data = json.loads(doc_context)
+    except (json.JSONDecodeError, TypeError):
+        context_data = {}
+    
+    clauses = context_data.get("clauses", [])
+    summary = context_data.get("summary", "")
+    risk_score = context_data.get("riskScore", 0)
+    interest_rate = context_data.get("interestRate", 0)
+    rate_type = context_data.get("rateType", "")
+    amount = context_data.get("amount", 0)
+    emi_val = context_data.get("emi", 0)
+    bank_name = bank or context_data.get("bank", "the bank")
+    loan = loan_type or context_data.get("loanType", "loan")
+    
+    clause_map = {}
+    for c in clauses:
+        clause_map[c.get("type", "").upper()] = c
+    
+    # Interest rate questions
+    if any(k in msg for k in ['interest rate', 'rate of interest', 'interest %', 'what rate', 'roi']):
+        ic = clause_map.get("INTEREST_RATE")
+        if ic:
+            return (
+                f"📊 **Interest Rate Details**\n\n"
+                f"According to your {loan} agreement with {bank_name}:\n\n"
+                f"- **Rate:** {ic.get('value', 'Not specified')}\n"
+                f"- **Risk Level:** {ic.get('risk', 'N/A').capitalize()}\n\n"
+                f"💡 **What this means:** {ic.get('explanation', '')}\n\n"
+                f"{'⚠️ Since this is a floating rate, your EMI could change when RBI revises the repo rate. Budget for potential 1-2% rate increases.' if 'floating' in ic.get('value', '').lower() else '✅ A fixed rate means your EMI stays constant throughout the loan tenure.'}"
+            )
+        return f"The interest rate on your {loan} is {interest_rate}% p.a. ({rate_type})."
+    
+    # Hidden charges / fees
+    if any(k in msg for k in ['hidden', 'charge', 'fee', 'processing fee', 'cost', 'extra']):
+        pf = clause_map.get("PROCESSING_FEE")
+        high_risk = [c for c in clauses if c.get("risk") == "high"]
+        
+        response = f"🔍 **Charges & Fees in Your {loan}**\n\n"
+        
+        if pf:
+            response += f"**Processing Fee:** {pf.get('value', 'Not specified')}\n"
+            response += f"- {pf.get('explanation', '')}\n\n"
+        
+        if high_risk:
+            response += "⚠️ **Potential Hidden Costs:**\n"
+            for c in high_risk:
+                response += f"- **{c.get('label', '')}:** {c.get('value', '')} — {c.get('explanation', '')}\n"
+            response += "\n"
+        
+        if not pf and not high_risk:
+            response += "No specific hidden charges were detected in the analyzed clauses.\n"
+        
+        response += "💡 **Tip:** Always ask the lender to provide a complete fee schedule in writing before signing."
+        return response
+    
+    # Missed payment / default
+    if any(k in msg for k in ['miss', 'default', 'late', 'overdue', 'npa', 'not pay', 'skip', "don't pay", 'cant pay']):
+        lp = clause_map.get("LATE_PAYMENT")
+        dc = clause_map.get("DEFAULT")
+        
+        response = f"⚠️ **What Happens If You Miss a Payment**\n\n"
+        
+        if lp:
+            response += f"**Late Payment Penalty:** {lp.get('value', 'Not specified')}\n"
+            response += f"- {lp.get('explanation', '')}\n\n"
+        
+        if dc:
+            response += f"**Default Consequences:** {dc.get('value', 'Not specified')}\n"
+            response += f"- {dc.get('explanation', '')}\n\n"
+        
+        if not lp and not dc:
+            response += "The specific penalties for missed payments were not found in the analyzed clauses. However, most Indian bank loans charge 1-2% per month on overdue amounts.\n\n"
+        
+        response += (
+            "💡 **Important Steps if Facing Difficulty:**\n"
+            "1. Contact your bank BEFORE missing a payment\n"
+            "2. Ask about EMI restructuring options\n"
+            "3. After 90 days of non-payment, your account may be classified as NPA\n"
+            "4. Under SARFAESI Act, the bank can take possession of collateral without court order"
+        )
+        return response
+    
+    # Collateral
+    if any(k in msg for k in ['collateral', 'security', 'mortgage', 'property', 'asset', 'guarantee']):
+        cc = clause_map.get("COLLATERAL")
+        
+        if cc:
+            return (
+                f"🏠 **Collateral / Security Details**\n\n"
+                f"**Clause:** {cc.get('value', 'Not specified')}\n"
+                f"- **Risk Level:** {cc.get('risk', 'N/A').capitalize()}\n\n"
+                f"💡 **In simple terms:** {cc.get('explanation', '')}\n\n"
+                f"📌 **Key points to understand:**\n"
+                f"- The property/asset pledged as security can be seized if you default\n"
+                f"- Under the SARFAESI Act, the bank can auction the property without going to court\n"
+                f"- You cannot sell or transfer the collateral without the bank's written permission"
+            )
+        return f"No specific collateral clause was found in the analyzed document. Personal loans are typically unsecured (no collateral required)."
+    
+    # Prepayment / foreclosure
+    if any(k in msg for k in ['prepay', 'foreclose', 'early', 'close early', 'pay off', 'full payment', 'pre-pay']):
+        pp = clause_map.get("PREPAYMENT")
+        
+        if pp:
+            return (
+                f"🔓 **Prepayment / Foreclosure Details**\n\n"
+                f"**Clause:** {pp.get('value', 'Not specified')}\n"
+                f"- **Risk Level:** {pp.get('risk', 'N/A').capitalize()}\n\n"
+                f"💡 **In simple terms:** {pp.get('explanation', '')}\n\n"
+                f"📌 **RBI Guidelines:**\n"
+                f"- For floating rate individual loans: Banks CANNOT charge prepayment penalty (RBI mandate)\n"
+                f"- For fixed rate loans: Banks may charge 1-3% of outstanding amount\n"
+                f"- Always check if there's a lock-in period before which prepayment isn't allowed"
+            )
+        return "No specific prepayment clause was found in the analyzed document."
+    
+    # Risk score
+    if any(k in msg for k in ['risk', 'score', 'risky', 'safe', 'danger']):
+        response = f"🛡️ **Risk Assessment for Your {loan}**\n\n"
+        response += f"- **Overall Risk Score:** {risk_score}/100\n"
+        response += f"- **Risk Level:** {'Low ✅' if risk_score <= 30 else 'Moderate ⚠️' if risk_score <= 60 else 'High 🔴'}\n\n"
+        
+        high_risk = [c for c in clauses if c.get("risk") == "high"]
+        moderate_risk = [c for c in clauses if c.get("risk") == "moderate"]
+        
+        if high_risk:
+            response += "🔴 **High Risk Factors:**\n"
+            for c in high_risk:
+                response += f"- {c.get('label', '')}: {c.get('value', '')}\n"
+            response += "\n"
+        
+        if moderate_risk:
+            response += "🟡 **Moderate Risk Factors:**\n"
+            for c in moderate_risk:
+                response += f"- {c.get('label', '')}: {c.get('value', '')}\n"
+            response += "\n"
+        
+        response += f"💡 **Recommendation:** {'This loan has significant risks. Consider negotiating terms or comparing with other lenders.' if risk_score > 60 else 'The risk level is manageable, but review the highlighted clauses carefully.' if risk_score > 30 else 'This appears to be a reasonably safe loan agreement.'}"
+        return response
+    
+    # Summary / overview
+    if any(k in msg for k in ['summary', 'overview', 'summarize', 'tell me about', 'what does', 'explain document', 'about this']):
+        response = f"📋 **Document Summary — {bank_name} {loan}**\n\n"
+        if amount:
+            amount_str = f"₹{amount/100000:.0f}L" if amount >= 100000 else f"₹{amount:,.0f}"
+            response += f"- **Loan Amount:** {amount_str}\n"
+        response += f"- **Interest Rate:** {interest_rate}% p.a. ({rate_type})\n"
+        if emi_val:
+            response += f"- **Monthly EMI:** ₹{emi_val:,}\n"
+        response += f"- **Risk Score:** {risk_score}/100\n\n"
+        
+        if summary:
+            response += f"**AI Analysis:** {summary}\n\n"
+        
+        response += f"📊 **{len(clauses)} clauses analyzed** — "
+        high_count = len([c for c in clauses if c.get("risk") == "high"])
+        mod_count = len([c for c in clauses if c.get("risk") == "moderate"])
+        response += f"{high_count} high risk, {mod_count} moderate risk\n\n"
+        response += "Ask me about any specific clause for a detailed explanation!"
+        return response
+    
+    # Cross-default / condition
+    if any(k in msg for k in ['cross', 'condition', 'clause', 'term', 'terms and condition']):
+        conditions = [c for c in clauses if c.get("type") in ["CONDITION", "DEFAULT"]]
+        if conditions:
+            response = "📜 **Important Conditions & Clauses**\n\n"
+            for c in conditions:
+                response += f"**{c.get('label', '')}**\n"
+                response += f"- {c.get('value', '')}\n"
+                response += f"- 💡 {c.get('explanation', '')}\n\n"
+            return response
+        return "No special condition or cross-default clauses were detected in this document."
+    
+    # EMI
+    if any(k in msg for k in ['emi', 'monthly', 'payment amount', 'installment']):
+        if emi_val:
+            return (
+                f"💰 **EMI Details**\n\n"
+                f"- **Monthly EMI:** ₹{emi_val:,}\n"
+                f"- **Interest Rate:** {interest_rate}% p.a. ({rate_type})\n"
+                f"- **Loan Amount:** ₹{amount/100000:.0f}L\n\n"
+                f"{'⚠️ Note: Since this is a floating rate loan, your EMI may change when the interest rate is revised.' if rate_type == 'Floating' else '✅ Your EMI will remain constant throughout the tenure.'}\n\n"
+                f"💡 Use the EMI Simulator for detailed analysis with rate change scenarios!"
+            )
+        return "EMI details were not available in the analyzed document. Use the EMI Simulator for calculations."
+    
+    # SARFAESI
+    if any(k in msg for k in ['sarfaesi', 'auction', 'seize', 'possession']):
+        dc = clause_map.get("DEFAULT")
+        if dc:
+            return (
+                f"⚠️ **SARFAESI Act Clause Found**\n\n"
+                f"**In your document:** {dc.get('value', '')}\n\n"
+                f"💡 **What this means in simple terms:**\n"
+                f"- If you don't pay your EMI for 90 consecutive days, your account becomes NPA\n"
+                f"- The bank will send you a 60-day notice\n"
+                f"- After the notice period, the bank can TAKE POSSESSION of your property\n"
+                f"- They can AUCTION it to recover the loan amount\n"
+                f"- ⚠️ All of this can happen WITHOUT a court order\n\n"
+                f"📌 **To protect yourself:** Always maintain an emergency fund covering 3-6 months of EMI. Contact the bank immediately if you're facing financial difficulty."
+            )
+        return "No SARFAESI clause was specifically found in the analyzed document."
+    
+    # Fallback: provide a helpful overview
+    clause_labels = [c.get("label", "") for c in clauses[:5]]
+    return (
+        f"I've analyzed your {bank_name} {loan} document. Here's what I can help with:\n\n"
+        f"📋 **Detected Clauses:** {', '.join(clause_labels)}\n\n"
+        f"You can ask me:\n"
+        f"- \"What is the interest rate?\"\n"
+        f"- \"Are there any hidden charges?\"\n"
+        f"- \"What happens if I miss a payment?\"\n"
+        f"- \"Explain the collateral clause\"\n"
+        f"- \"Can I prepay this loan?\"\n"
+        f"- \"What is the risk score?\"\n"
+        f"- \"Give me a summary of this document\"\n\n"
+        f"Ask anything specific about the loan agreement!"
+    )
+
+
+@app.post("/api/document-chat")
+def document_chat(request: DocumentChatRequest):
+    last_message = request.messages[-1].content if request.messages else ""
+    
+    if not last_message:
+        return {
+            "role": "assistant",
+            "content": "Please ask a question about your loan document.",
+            "timestamp": "2024-01-01T12:00:00Z",
+        }
+    
+    response = generate_document_response(
+        last_message,
+        request.document_context,
+        request.loan_type or "",
+        request.bank or "",
+    )
+    
+    return {
+        "role": "assistant",
+        "content": response,
+        "timestamp": "2024-01-01T12:00:00Z",
+    }
+
 @app.get("/api/banks")
 def get_banks(state: Optional[str] = None, loan_type: Optional[str] = None):
     filtered = BANK_DATA

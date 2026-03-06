@@ -55,6 +55,34 @@ const useStore = create((set, get) => ({
     })),
     setChatLoading: (loading) => set({ chatLoading: loading }),
 
+    // Document Chatbot (Analyzer page)
+    documentChatMessages: [
+        {
+            id: 1,
+            role: 'assistant',
+            content: "👋 Hi! I've analyzed your loan document. Ask me anything about the clauses, interest rates, penalties, or hidden charges found in your agreement.\n\nTry asking:\n- \"What is the interest rate?\"\n- \"Are there any hidden charges?\"\n- \"What happens if I miss a payment?\"",
+            timestamp: new Date().toISOString()
+        }
+    ],
+    documentChatLoading: false,
+    extractedDocumentText: null,
+    addDocumentChatMessage: (msg) => set((s) => ({
+        documentChatMessages: [...s.documentChatMessages, { ...msg, id: Date.now(), timestamp: new Date().toISOString() }]
+    })),
+    setDocumentChatLoading: (loading) => set({ documentChatLoading: loading }),
+    setExtractedDocumentText: (text) => set({ extractedDocumentText: text }),
+    clearDocumentChat: () => set({
+        documentChatMessages: [
+            {
+                id: 1,
+                role: 'assistant',
+                content: "👋 Hi! I've analyzed your loan document. Ask me anything about the clauses, interest rates, penalties, or hidden charges found in your agreement.\n\nTry asking:\n- \"What is the interest rate?\"\n- \"Are there any hidden charges?\"\n- \"What happens if I miss a payment?\"",
+                timestamp: new Date().toISOString()
+            }
+        ],
+        extractedDocumentText: null,
+    }),
+
     // Notifications
     notifications: [],
     addNotification: (notif) => set((s) => ({

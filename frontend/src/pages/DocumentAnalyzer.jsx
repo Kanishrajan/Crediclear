@@ -1,7 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload, FileText, CheckCircle, AlertTriangle, Info, Zap, Brain, ShieldAlert, Lightbulb, CheckCircle2 } from 'lucide-react';
+import { Upload, FileText, CheckCircle, AlertTriangle, Info, Zap, Brain, ShieldAlert, Lightbulb, CheckCircle2, Camera } from 'lucide-react';
 import { ClauseCard, RiskGauge, LoadingSpinner } from '../components/UI';
+import DocumentChatPanel from '../components/DocumentChatPanel';
+import UploadOptionsModal from '../components/UploadOptionsModal';
 import useStore from '../store/useStore';
 import { DEMO_DOCUMENTS, } from '../data/demoData';
 import { DOCUMENT_TYPES, LOAN_TYPES } from '../data/bankData';
@@ -19,11 +21,13 @@ function simulateAnalysis(fileName) {
 }
 
 export default function DocumentAnalyzer() {
-    const { analysisResult, analysisLoading, setAnalysisResult, setAnalysisLoading, setUploadedDocument } = useStore();
+    const { analysisResult, analysisLoading, setAnalysisResult, setAnalysisLoading, setUploadedDocument, setExtractedDocumentText, clearDocumentChat } = useStore();
     const [selectedDocType, setSelectedDocType] = useState('Loan Agreement');
     const [selectedLoanType, setSelectedLoanType] = useState('Home Loan');
     const [uploadedFile, setUploadedFile] = useState(null);
     const [activeTab, setActiveTab] = useState('clauses');
+    const [showUploadModal, setShowUploadModal] = useState(false);
+    const fileInputRef = useRef(null);
 
     const onDrop = useCallback((acceptedFiles) => {
         const file = acceptedFiles[0];
@@ -33,26 +37,46 @@ export default function DocumentAnalyzer() {
         }
     }, []);
 
+    const handleCameraFile = useCallback((file) => {
+        setUploadedFile(file);
+        setUploadedDocument(file.name);
+    }, []);
+
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
-        accept: { 'application/pdf': ['.pdf'] },
+        accept: { 'application/pdf': ['.pdf'], 'image/*': ['.png', '.jpg', '.jpeg'] },
         maxFiles: 1,
+        noClick: true, // Disable click - we handle it via modal
     });
+
+    const handleUploadAreaClick = (e) => {
+        // Only open modal if not drag-dropping
+        if (!isDragActive) {
+            setShowUploadModal(true);
+        }
+    };
 
     const handleAnalyze = async () => {
         if (!uploadedFile) return;
         setAnalysisLoading(true);
+        clearDocumentChat();
         await new Promise(r => setTimeout(r, 2500));
         const result = simulateAnalysis(uploadedFile?.name || 'sbi_home.pdf');
         setAnalysisResult(result);
+        // Store extracted document text for the chatbot
+        setExtractedDocumentText(JSON.stringify(result));
         setAnalysisLoading(false);
     };
 
     const handleDemoAnalyze = async (demoKey) => {
         setAnalysisLoading(true);
+        clearDocumentChat();
         setUploadedFile({ name: demoKey === 'personal_loan_hdfc' ? 'HDFC_Personal_Loan.pdf' : 'SBI_Home_Loan.pdf' });
         await new Promise(r => setTimeout(r, 2000));
-        setAnalysisResult(DEMO_DOCUMENTS[demoKey]);
+        const result = DEMO_DOCUMENTS[demoKey];
+        setAnalysisResult(result);
+        // Store extracted document text for the chatbot
+        setExtractedDocumentText(JSON.stringify(result));
         setAnalysisLoading(false);
     };
 
@@ -130,10 +154,26 @@ export default function DocumentAnalyzer() {
                         <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#1a1a2e', marginBottom: '12px' }}>Upload Document</h3>
                         <div
                             {...getRootProps()}
+                            onClick={handleUploadAreaClick}
                             className={`upload-area ${isDragActive ? 'dragging' : ''}`}
-                            style={{ padding: '30px 20px' }}
+                            style={{ padding: '30px 20px', cursor: 'pointer' }}
                         >
                             <input {...getInputProps()} />
+                            {/* Hidden file input for modal file upload option */}
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept=".pdf,.png,.jpg,.jpeg"
+                                style={{ display: 'none' }}
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) {
+                                        setUploadedFile(file);
+                                        setUploadedDocument(file.name);
+                                    }
+                                    e.target.value = '';
+                                }}
+                            />
                             {uploadedFile ? (
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
                                     <CheckCircle size={40} color="#16a34a" />
@@ -142,11 +182,14 @@ export default function DocumentAnalyzer() {
                                 </div>
                             ) : (
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-                                    <Upload size={36} color="#6366f1" style={{ opacity: 0.7 }} />
-                                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#1a1a2e' }}>
-                                        {isDragActive ? 'Drop PDF here' : 'Upload Loan PDF'}
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                        <Upload size={30} color="#6366f1" style={{ opacity: 0.7 }} />
+                                        <Camera size={26} color="#10b981" style={{ opacity: 0.6 }} />
                                     </div>
-                                    <div style={{ fontSize: '12px', color: '#94a3b8' }}>Drag & drop or click • PDF only • Max 20MB</div>
+                                    <div style={{ fontSize: '14px', fontWeight: 600, color: '#1a1a2e' }}>
+                                        {isDragActive ? 'Drop file here' : 'Upload Loan PDF'}
+                                    </div>
+                                    <div style={{ fontSize: '12px', color: '#94a3b8' }}>Drag & drop, upload file, or use camera • PDF / Image</div>
                                 </div>
                             )}
                         </div>
@@ -393,6 +436,17 @@ export default function DocumentAnalyzer() {
                     </div>
                 ) : null}
             </div>
+
+            {/* Upload Options Modal */}
+            <UploadOptionsModal
+                isOpen={showUploadModal}
+                onClose={() => setShowUploadModal(false)}
+                onFileSelected={handleCameraFile}
+                fileInputRef={fileInputRef}
+            />
+
+            {/* Document Chat Panel */}
+            <DocumentChatPanel analysisResult={analysisResult} />
         </div>
     );
 }
